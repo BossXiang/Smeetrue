@@ -1,0 +1,17 @@
+.description-box {
+  margin-top: 15%;
+  padding: 10%;
+  background-color: #ccc;
+  color: #000;
+  justify-content: center;
+  align-items: center;
+  border-radius: 10px;
+}
+
+#buttons-outer {
+  width: 100%;
+  text-align: right;
+  align-items: center;
+  justify-content: center;
+  height: 42px;
+}

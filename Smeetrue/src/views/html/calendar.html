@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Smeetrue</title>
+    <meta name="google-signin-client_id" content="414524429120-luneb60d6lof9ebf5j97qqqo6u5it3o1.apps.googleusercontent.com">
+	<script src="https://apis.google.com/js/platform.js" async defer></script>
+    <link rel="stylesheet" href="../../fontawesome/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Source+Sans+Pro&display=swap" rel="stylesheet">
+    <link href="../css/responsive.css" rel="stylesheet">
+    <link href="../css/bootstrap.min.css" rel="stylesheet">
+    <link href="../css/style.css" rel="stylesheet">
+    <link href="../css/calendar.css" rel="stylesheet">
+    <script src="https://unpkg.com/vue@next" defer></script>
+    <script src="../js/calenadr-vue.js" defer></script>
+</head>
+<body>
+	<header class="tm-header" id="tm-header">
+        <div class="tm-header-wrapper">
+            <button class="navbar-toggler" type="button" aria-label="Toggle navigation">
+                <i class="fas fa-bars"></i>
+            </button>
+            <div class="tm-site-header">
+                <div class="mb-3 mx-auto tm-site-logo"><i class="fas fa-book-open fa-2x"></i></div>            
+                <h1 class="text-center">Smeetrue</h1>
+            </div>
+            <nav class="tm-nav" id="tm-nav">            
+                <ul>
+                    <li class="tm-nav-item"><a href="index.html" class="tm-nav-link">
+                        <i class="fas fa-home"></i>
+                        Home
+                    </a></li>
+                    <li class="tm-nav-item active"><a href="calendar.html" class="tm-nav-link">
+                        <i class="fas fa-calendar-plus"></i>
+                        Calendar
+                    </a></li>
+                    <li class="tm-nav-item"><a href="mymeeting.html" class="tm-nav-link">
+                        <i class="fas fa-calendar"></i>
+                        My Meeting
+                    </a></li>
+                    <li class="tm-nav-item"><a href="myprofile.html" class="tm-nav-link">
+                        <i class="fas fa-user"></i>
+                        My Profile
+                    </a></li>
+                    
+                </ul>
+            </nav>
+            
+            <p class="tm-mb-80 pr-5 text-white">
+                Smeetrue is a virtual room reservation assistant.
+            </p>
+            <button onclick="signOut()" id="sign-out-button">Sign Out</button>
+        </div>
+    </header>
+
+
+    <section id="calendar">
+        <div id='fullDiv' v-if="isShowCalendar">
+            <div class="calendar-month">
+                <i class="fas fa-angle-left prev"></i>
+                <div>
+                    <h1 style="color: black;">December</h1>
+                    <h2>2021</h2>
+                </div>
+                <i class="fas fa-angle-right next"></i>
+            </div>
+            
+            <ul>
+                <li class="calendar-date">SUN</li>
+                <li class="calendar-date">MON</li>
+                <li class="calendar-date">TUE</li>
+                <li class="calendar-date">WED</li>
+                <li class="calendar-date">THUR</li>
+                <li class="calendar-date">FRI</li>
+                <li class="calendar-date">SAT</li>
+                <li class="calendar-date" @click="changeState(1)" v-for="date in datesList" >{{ date }}</li>
+            </ul>
+        </div>
+
+        <div class="calendar-time-table" v-if="isShowDateInfo">
+            <table>
+                <tr>
+                  <td>&nbsp;</td>
+                  <th>9:00</th>
+                  <th>10:00</th>
+                  <th>11:00</th>
+                  <th>12:00</th>
+                  <th>13:00</th>
+                  <th>14:00</th>
+                  <th>15:00</th>
+                  <th>16:00</th>
+                  <th>17:00</th>
+                </tr>
+                <tr>
+                  <th>RoomA</th>
+                  <td>&nbsp;</td>
+                  <td>&nbsp;</td>
+                  <td style="background-color: saddlebrown;"></td>
+                  <td style="background-color: saddlebrown;">&nbsp;</td>
+                  <td>&nbsp;</td>
+                  <td>&nbsp;</td>
+                  <td>&nbsp;</td>
+                  <td>&nbsp;</td>
+                  <td>&nbsp;</td>
+                </tr>
+                <tr>
+                  <th>RoomB</th>
+                  <td>&nbsp;</td>
+                  <td>&nbsp;</td>
+                  <td>&nbsp;</td>
+                  <td>&nbsp;</td>
+                  <td style="background-color: saddlebrown;">&nbsp;</td>
+                  <td style="background-color: saddlebrown;">&nbsp;</td>
+                  <td style="background-color: saddlebrown;">&nbsp;</td>
+                  <td>&nbsp;</td>
+                  <td>&nbsp;</td>
+                </tr>
+                <tr>
+                  <th>RoomC</th>
+                  <td>&nbsp;</td>
+                  <td>&nbsp;</td>
+                  <td>&nbsp;</td>
+                  <td>&nbsp;</td>
+                  <td>&nbsp;</td>
+                  <td>&nbsp;</td>
+                  <td style="background-color: saddlebrown;">&nbsp;</td>
+                  <td>&nbsp;</td>
+                  <td>&nbsp;</td>
+                </tr>
+                <tr>
+                  <th>RoomD</th>
+                  <td>&nbsp;</td>
+                  <td>&nbsp;</td>
+                  <td>&nbsp;</td>
+                  <td>&nbsp;</td>
+                  <td>&nbsp;</td>
+                  <td>&nbsp;</td>
+                  <td>&nbsp;</td>
+                  <td>&nbsp;</td>
+                  <td>&nbsp;</td>
+                </tr>
+                <tr>
+                    <th>RoomE</th>
+                    <td style="background-color: saddlebrown;">&nbsp;</td>
+                    <td style="background-color: saddlebrown;">&nbsp;</td>
+                    <td>&nbsp;</td>
+                    <td>&nbsp;</td>
+                    <td>&nbsp;</td>
+                    <td>&nbsp;</td>
+                    <td>&nbsp;</td>
+                    <td>&nbsp;</td>
+                    <td>&nbsp;</td>
+                  </tr>
+            </table>
+            <button class="calendar-button" @click="changeState(2)">Book!</button>
+        </div>
+
+        <!-- <div class="calendar-pop-up-screen" v-if="isShowDateInfo">
+            <i class="fas fa-angle-left prev" @click="showCalendar" style="cursor: pointer;"></i>
+            <h1 style="text-align: center;">12/27(Mon)</h1>
+            <ul>
+                <li style="text-align: center;">10:00~11:00 RoomA (Team1)</li>
+                <li style="text-align: center;">11:00~12:00 RoomA (Team2)</li>
+                <li style="text-align: center;">11:00~12:00 RoomB (Team3)</li>
+                <li style="text-align: center;">13:00~14:00 RoomC (Team1)</li>
+                <li style="text-align: center;">15:00~17:00 RoomB (Team1)</li>
+                <li style="text-align: center;">16:00~17:00 RoomA (Team2)</li>
+            </ul>
+            <button @click="changeState(2)">Back</button>
+        </div> -->
+
+        <div class="container-fluid" id = "calendar-booking-page" v-if="isShowRoomView">
+            <div class="w3ls-contact">
+                <!-- form starts here -->
+                <form action="#" method="post">
+                    <div class="agile-field-txt">
+                        <label>
+                        Host:</label>
+                        <input type="text" name="name" placeholder=" " />
+                    </div>
+                    <div class="agile-field-txt">
+                        <label>
+                        Name:</label>
+                        <input type="text" name="name" placeholder=" " />
+                    </div>
+                    <div class="agile-field-txt">
+                        <label>
+                        Time :</label>
+                        <div class="mr_agilemain">
+                        <div class="left-wthree">
+                            <input type="text" name="name" placeholder=" ">
+                            <label class="bot_w3">
+                            Start Time</label>
+                        </div>
+                        <div class="left-wthree">
+                            <input type="text" name="name" placeholder=" ">
+                            <label class="bot_w3">
+                            End Time</label>
+                        </div>
+                        </div>
+                    </div>
+                    <div class="agile-field-txt">
+                        <label>
+                        Attendee:</label>
+                        <input type="text" name="name" placeholder=" " v-on:keyup.enter="addNewInvitee"/>
+                    </div>
+
+                    <div style="width: 100%;">
+                        <label>Total Participants: 6</label>
+                    </div>
+
+                    <ul>
+                        <li style="margin-left: 30%;">Tommy_example1@gamil.com</li>
+                        <li style="margin-left: 30%;">John_example2@gamil.com</li>
+                        <li style="margin-left: 30%;">Jess_example3@gamil.com</li>
+                        <li style="margin-left: 30%;">Kris_example4@gamil.com</li>
+                        <li style="margin-left: 30%;">Timmy_example5@gamil.com</li>
+                        <li style="margin-left: 30%;">Lisa_example6@gamil.com</li>
+
+                        <!-- <li v-for="invitee in invitees" >
+                            <p>{{ invitee }}</p>
+                        </li> -->
+                    </ul>
+                    
+                    
+                    <div style="text-align: right; width: 100%;">
+                        <button class="form-button">Book</button>
+                        <button class="form-button" @click="changeState(1)">Back</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </section>
+
+
+    
+    
+    
+
+    <script src="../js/googleapi.js"></script>
+</body>
+</html>
