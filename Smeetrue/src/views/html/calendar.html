@@ -15,7 +15,7 @@
     <script src="https://unpkg.com/vue@next" defer></script>
     <script src="../js/calenadr-vue.js" defer></script>
 </head>
-<body>
+<body style="font-family:'Source Sans Pro', sans-serif">
 	<header class="tm-header" id="tm-header">
         <div class="tm-header-wrapper">
             <button class="navbar-toggler" type="button" aria-label="Toggle navigation">
@@ -23,7 +23,7 @@
             </button>
             <div class="tm-site-header">
                 <div class="mb-3 mx-auto tm-site-logo"><i class="fas fa-book-open fa-2x"></i></div>            
-                <h1 class="text-center">Smeetrue</h1>
+                <h1 class="text-center"style="font-family:'Source Sans Pro', sans-serif">Smeetrue</h1>
             </div>
             <nav class="tm-nav" id="tm-nav">            
                 <ul>
@@ -47,20 +47,19 @@
                 </ul>
             </nav>
             
-            <p class="tm-mb-80 pr-5 text-white">
-                Smeetrue is a virtual room reservation assistant.
+           
             </p>
             <button onclick="signOut()" id="sign-out-button">Sign Out</button>
         </div>
     </header>
 
 
-    <section id="calendar">
+    <div id="calendar" style="margin-right: 10%;margin-left: 10%;">
         <div id='fullDiv' v-if="isShowCalendar">
             <div class="calendar-month">
                 <i class="fas fa-angle-left prev"></i>
                 <div>
-                    <h1 style="color: black;">December</h1>
+                    <h1 style="color: black;font-family:'Source Sans Pro', sans-serif">December</h1>
                     <h2>2021</h2>
                 </div>
                 <i class="fas fa-angle-right next"></i>
@@ -78,7 +77,7 @@
             </ul>
         </div>
 
-        <div class="calendar-time-table" v-if="isShowDateInfo">
+        <div class="calendar-time-table" v-if="isShowDateInfo" >
             <table>
                 <tr>
                   <td>&nbsp;</td>
@@ -170,7 +169,7 @@
             <button @click="changeState(2)">Back</button>
         </div> -->
 
-        <div class="container-fluid" id = "calendar-booking-page" v-if="isShowRoomView">
+        <div class="container-fluid" id = "calendar-booking-page" v-if="isShowRoomView" style="margin-left: 10%;margin-right: 10%;margin-top: 2%;margin-bottom: 5%;">
             <div class="w3ls-contact">
                 <!-- form starts here -->
                 <form action="#" method="post">
@@ -231,7 +230,7 @@
                 </form>
             </div>
         </div>
-    </section>
+    </div>
 
 
     

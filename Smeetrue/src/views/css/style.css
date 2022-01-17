@@ -66,8 +66,8 @@ hr {
 }
 
 .tm-site-header {
-  margin-top: 50px;
-  margin-bottom: 115px;
+  margin-top: 0px;
+  margin-bottom: 0px;
 }
 
 .tm-site-logo {
@@ -451,9 +451,6 @@ figcaption {
 .tm-mb-75 {
   margin-bottom: 75px;
 }
-.tm-mb-80 {
-  margin-bottom: 80px;
-}
 .tm-mb-120 {
   margin-bottom: 120px;
 }
@@ -773,13 +770,16 @@ a:hover figcaption {
 
 #fullDiv {
   position: absolute;
-  margin: 10%;
+  margin-top: 4%;
+  margin-left: 10%;
+  margin-bottom: 10%;
+  margin-right: 10%;
   padding: 5%;
   left: 23.5%;
-  top: 5%;
+  top: 0%;
   bottom: 0;
   right: 0;
-  height: 70%;
+  height: 85%;
   overflow: hidden;
   background-color: #53d8d8;
   border-radius: 10px;
@@ -856,7 +856,7 @@ li.calendar-date:hover:nth-child(n + 11):nth-child(-n + 41) {
   appearance: button;
   backface-visibility: hidden;
   background-color: #fff;
-  border-radius: 6px;
+  border-radius: 2px;
   border-width: 0;
   box-shadow: rgba(50, 50, 93, 0.1) 0 0 0 1px inset,
     rgba(50, 50, 93, 0.1) 0 2px 5px 0, rgba(0, 0, 0, 0.07) 0 1px 1px 0;
@@ -868,7 +868,7 @@ li.calendar-date:hover:nth-child(n + 11):nth-child(-n + 41) {
   font-size: 80%;
   height: 36px;
   line-height: 1.15;
-  margin: 12px 0 0;
+
   outline: none;
   overflow: hidden;
   padding: 0 25px;
