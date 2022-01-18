@@ -174,7 +174,8 @@
         <div class="container-fluid" id = "calendar-booking-page" v-if="isShowRoomView" style="margin-left: 10%;margin-right: 10%;margin-top: 2%;margin-bottom: 5%;">
             <div class="w3ls-contact">
                 <!-- form starts here -->
-                <form action="#" method="post">
+               
+                <form action="" method="post" onsubmit="return false">
                     <div class="agile-field-txt">
                         <label>
                         Host:</label>
@@ -204,20 +205,18 @@
                     <div class="agile-field-txt">
                         <label>
                         Attendee:</label>
-                        <input type="text" name="name" placeholder=" " v-on:keyup.enter="addNewInvitee"/>
+                       
+                        <input type="text" name="name" placeholder="Input the invitee email" v-model="inputInvitee"/>
+                        <button style="float:right;margin-top:1%;margin-right: 1%;width: 45px;height: 33px;line-height: 16px;" class="form-button" @click="addNewInvitee()">+</button>
                     </div>
 
                     <div style="width: 100%;">
-                        <label>Total Participants: 6</label>
+                        
+                        <label>Total Participants: {{invitees.length}}</label>
                     </div>
 
                     <div style="width: 550px;height: 200px; overflow-x:hidden;">
-                        <p>Tommy_example1@gamil.com <button style="float:right;margin-top:1%;margin-right: 1%;width: 45px;height: 33px;line-height: 16px;" class="form-button">—</button></p>
-                        <p>John_example2@gamil.com <button style="float:right;margin-top:1%;margin-right: 1%;width: 45px;height: 33px;line-height: 16px;" class="form-button">—</button></p>
-                        <p>Kris_example4@gamil.com <button style="float:right;margin-top:1%;margin-right: 1%;width: 45px;height: 33px;line-height: 16px;" class="form-button">—</button></p>
-                        <p>Jess_example1@gamil.com <button style="float:right;margin-top:1%;margin-right: 1%;width: 45px;height: 33px;line-height: 16px;" class="form-button">—</button></p>
-                        <p>haha_example2@gamil.com <button style="float:right;margin-top:1%;margin-right: 1%;width: 45px;height: 33px;line-height: 16px;" class="form-button">—</button></p>
-                        <p>Kiki_example4@gamil.com <button style="float:right;margin-top:1%;margin-right: 1%;width: 45px;height: 33px;line-height: 16px;" class="form-button">—</button></p>
+                        <p v-for="(invitee, index) in invitees"> {{invitee}} <button style="float:right;margin-top:1%;margin-right: 1%;width: 45px;height: 33px;line-height: 16px;" class="form-button" @click="removeInvitee(index)">—</button></p>
                     </div>
                     
                     
