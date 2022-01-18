@@ -19,7 +19,15 @@ const app = Vue.createApp({
         "December",
       ],
       currMonth: 0,
-      invitees: [],
+      invitees: [
+        "Tommy_example1@gamil.com",
+        "John_example2@gamil.com",
+        "Kris_example4@gamil.com",
+        "Jess_example1@gamil.com",
+        "haha_example2@gamil.com",
+        "Kiki_example4@gamil.com",
+      ],
+      inputInvitee: "",
     };
   },
   computed: {
@@ -74,7 +82,12 @@ const app = Vue.createApp({
       this.state = value;
     },
     addNewInvitee() {
-      alert("test");
+      if (this.inputInvitee === "") return;
+      this.invitees.push(this.inputInvitee);
+      this.inputInvitee = "";
+    },
+    removeInvitee(index) {
+      this.invitees.splice(index, 1);
     },
     addMonth() {
       if (this.currMonth < 11) {
