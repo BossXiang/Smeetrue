@@ -87,7 +87,7 @@ const app = Vue.createApp({
       }
     },
     onDateClick(index) {
-      if (index > 0 && index <= this.dayOfMonths[this.currMonth]) {
+      if (index >= 0 && index < this.dayOfMonths[this.currMonth]) {
         this.changeState(1);
       }
     },

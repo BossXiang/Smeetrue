@@ -62,12 +62,12 @@
                 <h1 style="display: inline-block;font-family:'Source Sans Pro', sans-serif">Attendee</h1>
             </div>
             <div class="calendar-month">
-                <i class="fas fa-angle-left prev"></i>
+                <i class="fas fa-angle-left prev" @click="decMonth()"></i>
                 <div>
-                    <h1 style="font-family:'Source Sans Pro', sans-serif">December</h1>
-                    <h2 style="font-family:'Source Sans Pro', sans-serif">2021</h2>
+                    <h1 style="font-family:'Source Sans Pro', sans-serif">{{ monthName }}</h1>
+                    <h2 style="font-family:'Source Sans Pro', sans-serif">2022</h2>
                 </div>
-                <i class="fas fa-angle-right next"></i>
+                <i class="fas fa-angle-right next" @click="addMonth()"></i>
             </div>
             
             <ul>
@@ -78,13 +78,16 @@
                 <li class="calendar-date">THUR</li>
                 <li class="calendar-date">FRI</li>
                 <li class="calendar-date">SAT</li>
-                <li class="calendar-date" v-for="(date, index) in datesList" @click="viewMeetings(index)">
+                <li class="calendar-date" v-for="(date, index) in preDatesList" ></li>
+                <li class="calendar-date-active" v-for="(date, index) in datesList" @click="onDateClick(index)">
                     <label style="height: 10%;">{{ date }}</label>
                     <div style="margin-top: -10%;">
                         <div v-if="host[index]" style="display: inline-block; width: 15px; height: 15px; background-color: red; border-radius: 3px;" ></div>
                         <div v-if="meet[index]" style="display: inline-block; width: 15px; height: 15px; background-color: black; border-radius: 3px;" ></div>
                     </div>
                 </li>
+                <li class="calendar-date" v-for="(date, index) in postDatesList" ></li>
+
             </ul>
         </div>
         
