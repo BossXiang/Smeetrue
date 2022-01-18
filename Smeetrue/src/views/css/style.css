@@ -100,6 +100,7 @@ hr {
 
 .tm-nav {
   margin-bottom: 100px;
+  margin-top: 70px;
 }
 
 .tm-nav-item {
@@ -770,16 +771,16 @@ a:hover figcaption {
 
 #fullDiv {
   position: absolute;
-  margin-top: 4%;
+  margin-top: 3%;
   margin-left: 10%;
   margin-bottom: 10%;
   margin-right: 10%;
-  padding: 5%;
+  padding: 3%;
   left: 23.5%;
   top: 0%;
   bottom: 0;
   right: 0;
-  height: 82%;
+  height: 85%;
   overflow: hidden;
   background-color: #53d8d8;
   border-radius: 10px;
