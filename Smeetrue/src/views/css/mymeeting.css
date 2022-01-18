@@ -7,8 +7,9 @@ div.div-black-box {
   margin-left: 30%;
   background-color: #0cc;
   width: 60%;
-  height: 1000px;
+  height: 800px;
   border-radius: 10px;
+  margin-top: 2%;
 }
 
 .meetingListItem {

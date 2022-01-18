@@ -78,6 +78,7 @@ caption {
   touch-action: manipulation;
   vertical-align: middle;
   white-space: nowrap;
+  margin-left: 49%;
 }
 
 .calendar-button:focus:not(:focus-visible):not(.focus-visible) {

@@ -56,9 +56,9 @@
     <section id="mymeeting">
         <div id='fullDiv' v-if = isShowCalendar>
             <div style="width: 100%; text-align: center;" >
-                <div style="display: inline-block; width: 50px; height: 50px; border-radius: 7px; background-color: red;"></div>
+                <div style="display: inline-block; width: 50px; height: 50px; border-radius: 7px; background-color: rgb(255, 13, 13)"></div>
                 <h1 style="display: inline-block;font-family:'Source Sans Pro', sans-serif;">Host</h1>
-                <div style="display: inline-block; margin-left: 10%; width: 50px; height: 50px; border-radius: 7px; background-color: black;"></div>
+                <div style="display: inline-block; margin-left: 10%; width: 50px; height: 50px; border-radius: 7px; background-color: rgb(44, 2, 2)"></div>
                 <h1 style="display: inline-block;font-family:'Source Sans Pro', sans-serif">Attendee</h1>
             </div>
             <div class="calendar-month">
@@ -81,8 +81,8 @@
                 <li class="calendar-date" v-for="(date, index) in datesList" @click="viewMeetings(index)">
                     <label style="height: 10%;">{{ date }}</label>
                     <div style="margin-top: -10%;">
-                        <div v-if="host[index]" style="display: inline-block; width: 15px; height: 15px; background-color: red; border-radius: 3px;" ></div>
-                        <div v-if="meet[index]" style="display: inline-block; width: 15px; height: 15px; background-color: black; border-radius: 3px;" ></div>
+                        <div v-if="host[index]" style="display: inline-block; width: 15px; height: 15px; background-color: rgb(255, 13, 13); border-radius: 3px;" ></div>
+                        <div v-if="meet[index]" style="display: inline-block; width: 15px; height: 15px; background-color: rgb(44, 2, 2); border-radius: 3px;" ></div>
                     </div>
                 </li>
             </ul>
@@ -134,18 +134,17 @@
                     <div style="width: 100%;">
                         <label>Total Participants: 6</label>
                     </div>
-
-                    <ul>
-                        <li style="margin-left: 30%;">example1@gamil.com</li>
-                        <li style="margin-left: 30%;">example2@gamil.com</li>
-                        <li style="margin-left: 30%;">example3@gamil.com</li>
-                        <li style="margin-left: 30%;">example4@gamil.com</li>
-                        <li style="margin-left: 30%;">example5@gamil.com</li>
-                        <li style="margin-left: 30%;">example6@gamil.com</li>
-                    </ul>
+                    <div style="width: 550px;height: 200px; overflow-x:hidden;">
+                        <p>Tommy_example1@gamil.com <button style="float:right;margin-top:1%;margin-right: 1%;width: 45px;height: 33px;line-height: 16px;" class="form-button">—</button></p>
+                        <p>John_example2@gamil.com <button style="float:right;margin-top:1%;margin-right: 1%;width: 45px;height: 33px;line-height: 16px;" class="form-button">—</button></p>
+                        <p>Kris_example4@gamil.com <button style="float:right;margin-top:1%;margin-right: 1%;width: 45px;height: 33px;line-height: 16px;" class="form-button">—</button></p>
+                        <p>Jess_example1@gamil.com <button style="float:right;margin-top:1%;margin-right: 1%;width: 45px;height: 33px;line-height: 16px;" class="form-button">—</button></p>
+                        <p>haha_example2@gamil.com <button style="float:right;margin-top:1%;margin-right: 1%;width: 45px;height: 33px;line-height: 16px;" class="form-button">—</button></p>
+                        <p>Kiki_example4@gamil.com <button style="float:right;margin-top:1%;margin-right: 1%;width: 45px;height: 33px;line-height: 16px;" class="form-button">—</button></p>
+                    </div>
                     
                     
-                    <div style="text-align: right; width: 100%;">
+                    <div style="text-align: right; width: 100%;margin-top: 10%;">
                         <button v-if="isHost && !isEditing" class="form-button" style="width: 140px; margin-right: 2%;">Cancel meeting</button>
                         <button v-if="isHost && !isEditing" class="form-button" style="width: 140px; margin-right: 2%;" @click="changeState(3)">Send Email</button>
                         <button v-if="isHost && !isEditing" class="form-button" style="width: 140px; margin-right: 2%;" @click="setEditMode(true)">Edit</button>
@@ -157,11 +156,11 @@
         </div>
         
         <div id="meetingList" v-if = isShowEmailBox style="text-align: center;">
-            <h1 style="margin-bottom: 3%;">Message</h1>
-            <input type="textarea" style="width: 90%; height: 70%;">
+            <h1 style="font-family:'Source Sans Pro', sans-serif">Message</h1>
+            <input type="textarea" style="width: 90%; height: 80%;">
             <div style="text-align: right; width: 100%;">
-                <button class="form-button" style="width: 140px; margin-top: 3%; margin-right: 2%;" @click="changeState(2)">Send</button>
-                <button class="form-button" style="width: 140px; margin-top: 3%; margin-right: 2%;" @click="changeState(2)">Cancel</button>
+                <button class="form-button" style="width: 140px;height: 40px; margin-top:4%; margin-right: 2%;" @click="changeState(2)">Send</button>
+                <button class="form-button" style="width: 140px; height: 40px;margin-top: 4%; margin-right: 2%;" @click="changeState(2)">Cancel</button>
             </div>
         </div>
 
