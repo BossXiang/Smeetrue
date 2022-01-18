@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Smeetrue</title>
+    <meta name="google-signin-client_id" content="414524429120-luneb60d6lof9ebf5j97qqqo6u5it3o1.apps.googleusercontent.com">
+	<script src="https://apis.google.com/js/platform.js" async defer></script>
+    <link rel="stylesheet" href="fontawesome/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Source+Sans+Pro&display=swap" rel="stylesheet">
+    <link href="css/responsive.css" rel="stylesheet">
+    <link href="css/bootstrap.min.css" rel="stylesheet">
+    <link href="css/style.css" rel="stylesheet">
+    <link href="css/mymeeting.css" rel="stylesheet">
+    <script src="https://unpkg.com/vue@next" defer></script>
+    <script src="js/mymeeting-vue.js" defer></script>
+    <script src="js/googleapi.js"></script>
+</head>
+<body>
+	<header class="tm-header" id="tm-header">
+        <div class="tm-header-wrapper">
+            <button class="navbar-toggler" type="button" aria-label="Toggle navigation">
+                <i class="fas fa-bars"></i>
+            </button>
+            <div class="tm-site-header">
+                <div class="mb-3 mx-auto tm-site-logo"><i class="fas fa-book-open fa-2x"></i></div>            
+                <h1 class="text-center" style="font-family:'Source Sans Pro', sans-serif">Smeetrue</h1>
+            </div>
+            <nav class="tm-nav" id="tm-nav">            
+                <ul>
+                    <li class="tm-nav-item"><a href="/" class="tm-nav-link">
+                        <i class="fas fa-home"></i>
+                        Home
+                    </a></li>
+                    <li class="tm-nav-item"><a href="calendar" class="tm-nav-link">
+                        <i class="fas fa-calendar-plus"></i>
+                        Calendar
+                    </a></li>
+                    <li class="tm-nav-item active"><a href="mymeeting" class="tm-nav-link">
+                        <i class="fas fa-calendar"></i>
+                        My Meeting
+                    </a></li>
+                    <li class="tm-nav-item"><a href="myprofile" class="tm-nav-link">
+                        <i class="fas fa-user"></i>
+                        My Profile
+                    </a></li>
+                    
+                </ul>
+            </nav>
+            
+            </p>
+            <a href="/logout" id="sign-out-button">Sign out</a>
+            <!-- <button onclick="signOut()" id="sign-out-button">Sign Out</button> -->
+        </div>
+    </header>
+
+    <section id="mymeeting">
+        <div id='fullDiv' v-if = isShowCalendar>
+            <div style="width: 100%; text-align: center;" >
+                <div style="display: inline-block; width: 50px; height: 50px; border-radius: 7px; background-color: rgb(255, 13, 13)"></div>
+                <h1 style="display: inline-block;font-family:'Source Sans Pro', sans-serif;">Host</h1>
+                <div style="display: inline-block; margin-left: 10%; width: 50px; height: 50px; border-radius: 7px; background-color: rgb(44, 2, 2)"></div>
+                <h1 style="display: inline-block;font-family:'Source Sans Pro', sans-serif">Attendee</h1>
+            </div>
+            <div class="calendar-month">
+                <i class="fas fa-angle-left prev" @click="decMonth()"></i>
+                <div>
+                    <h1 style="font-family:'Source Sans Pro', sans-serif">{{ monthName }}</h1>
+                    <h2 style="font-family:'Source Sans Pro', sans-serif">2022</h2>
+                </div>
+                <i class="fas fa-angle-right next" @click="addMonth()"></i>
+            </div>
+            
+            <ul>
+                <li class="calendar-date">SUN</li>
+                <li class="calendar-date">MON</li>
+                <li class="calendar-date">TUE</li>
+                <li class="calendar-date">WED</li>
+                <li class="calendar-date">THUR</li>
+                <li class="calendar-date">FRI</li>
+                <li class="calendar-date">SAT</li>
+                <li class="calendar-date" v-for="(date, index) in preDatesList" ></li>
+                <li class="calendar-date-active" v-for="(date, index) in datesList" @click="onDateClick(index)">
+                    <label style="height: 10%;">{{ date }}</label>
+                    <div style="margin-top: -10%;">
+                        <div v-if="host[index]" style="display: inline-block; width: 15px; height: 15px; background-color: rgb(255, 13, 13); border-radius: 3px;" ></div>
+                        <div v-if="meet[index]" style="display: inline-block; width: 15px; height: 15px; background-color: rgb(44, 2, 2); border-radius: 3px;" ></div>
+                    </div>
+                </li>
+                <li class="calendar-date" v-for="(date, index) in postDatesList" ></li>
+
+            </ul>
+        </div>
+        
+        <div id="meetingList" v-if = isShowMeetingList style="text-align: center; height: fit-content;">
+            <h1>2021/12/2</h1>
+            <label class="meetingListItem" @click="changeState(2)">MeetingA 10:00~11:00</label>
+            <label class="meetingListItem" @click="changeState(2)">MeetingA 11:00~12:00</label>
+            <label class="meetingListItem" @click="changeState(2)">MeetingB 14:00~15:00</label>
+            <label class="meetingListItem" @click="changeState(2)">MeetingC 15:00~16:00</label>
+        </div>
+
+        <div class="container-fluid" id = "calendar-booking-page" v-if = isShowMeetingInfo style="margin-left: 10%;margin-right: 10%;margin-top: 2%;margin-bottom: 5%;">
+            <div class="w3ls-contact">
+                <form action="#" method="post">
+                    <div class="agile-field-txt">
+                        <label>
+                        Host:</label>
+                        <input type="text" name="name" placeholder=" " />
+                    </div>
+                    <div class="agile-field-txt">
+                        <label>
+                        Name:</label>
+                        <input type="text" name="name" placeholder=" " />
+                    </div>
+                    <div class="agile-field-txt">
+                        <label>
+                        Time :</label>
+                        <div class="mr_agilemain">
+                        <div class="left-wthree">
+                            <input type="text" name="name" placeholder=" ">
+                            <label class="bot_w3">
+                            Start Time</label>
+                        </div>
+                        <div class="left-wthree">
+                            <input type="text" name="name" placeholder=" ">
+                            <label class="bot_w3">
+                            End Time</label>
+                        </div>
+                        </div>
+                    </div>
+                    <div class="agile-field-txt" v-if="isEditing">
+                        <label>
+                        Attendee:</label>
+                        <input type="text" name="name" placeholder=" "/>
+                    </div>
+
+                    <div style="width: 100%;">
+                        <label>Total Participants: 6</label>
+                    </div>
+                    <div style="width: 550px;height: 200px; overflow-x:hidden;">
+                        <p>Tommy_example1@gamil.com <button style="float:right;margin-top:1%;margin-right: 1%;width: 45px;height: 33px;line-height: 16px;" class="form-button">—</button></p>
+                        <p>John_example2@gamil.com <button style="float:right;margin-top:1%;margin-right: 1%;width: 45px;height: 33px;line-height: 16px;" class="form-button">—</button></p>
+                        <p>Kris_example4@gamil.com <button style="float:right;margin-top:1%;margin-right: 1%;width: 45px;height: 33px;line-height: 16px;" class="form-button">—</button></p>
+                        <p>Jess_example1@gamil.com <button style="float:right;margin-top:1%;margin-right: 1%;width: 45px;height: 33px;line-height: 16px;" class="form-button">—</button></p>
+                        <p>haha_example2@gamil.com <button style="float:right;margin-top:1%;margin-right: 1%;width: 45px;height: 33px;line-height: 16px;" class="form-button">—</button></p>
+                        <p>Kiki_example4@gamil.com <button style="float:right;margin-top:1%;margin-right: 1%;width: 45px;height: 33px;line-height: 16px;" class="form-button">—</button></p>
+                    </div>
+                    
+                    
+                    <div style="text-align: right; width: 100%;margin-top: 10%;">
+                        <button v-if="isHost && !isEditing" class="form-button" style="width: 140px; margin-right: 2%;">Cancel meeting</button>
+                        <button v-if="isHost && !isEditing" class="form-button" style="width: 140px; margin-right: 2%;" @click="changeState(3)">Send Email</button>
+                        <button v-if="isHost && !isEditing" class="form-button" style="width: 140px; margin-right: 2%;" @click="setEditMode(true)">Edit</button>
+                        <button v-if="isEditing" class="form-button" style="width: 140px; margin-right: 2%;" @click="setEditMode(false)">Save</button>
+                        <button v-if="isEditing" class="form-button" style="width: 140px; margin-right: 2%;" @click="setEditMode(false)">Back</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+        
+        <div id="meetingList" v-if = isShowEmailBox style="text-align: center;">
+            <h1 style="font-family:'Source Sans Pro', sans-serif">Message</h1>
+            <input type="textarea" style="width: 90%; height: 80%;">
+            <div style="text-align: right; width: 100%;">
+                <button class="form-button" style="width: 140px;height: 40px; margin-top:4%; margin-right: 2%;" @click="changeState(2)">Send</button>
+                <button class="form-button" style="width: 140px; height: 40px;margin-top: 4%; margin-right: 2%;" @click="changeState(2)">Cancel</button>
+            </div>
+        </div>
+
+    </section>
+
+</body>
+</html>

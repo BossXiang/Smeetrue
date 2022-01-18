@@ -6,14 +6,15 @@
  <title>Smeetrue</title>
  <meta name="google-signin-client_id" content="414524429120-luneb60d6lof9ebf5j97qqqo6u5it3o1.apps.googleusercontent.com">
  <script src="https://apis.google.com/js/platform.js" async defer></script>
- <link rel="stylesheet" href="../../fontawesome/css/all.min.css"> <!-- https://fontawesome.com/ -->
+ <link rel="stylesheet" href="fontawesome/css/all.min.css"> <!-- https://fontawesome.com/ -->
  <link href="https://fonts.googleapis.com/css2?family=Source+Sans+Pro&display=swap" rel="stylesheet"> <!-- https://fonts.google.com/ -->
- <link href="../css/responsive.css" rel="stylesheet">
- <link href="../css/bootstrap.min.css" rel="stylesheet">
- <link href="../css/style.css" rel='stylesheet' type='text/css' />
- <link href="../css/myprofile.css" rel='stylesheet' type='text/css' />
+ <link href="css/responsive.css" rel="stylesheet">
+ <link href="css/bootstrap.min.css" rel="stylesheet">
+ <link href="css/style.css" rel='stylesheet' type='text/css' />
+ <link href="css/myprofile.css" rel='stylesheet' type='text/css' />
  <script src="https://unpkg.com/vue@next" defer></script>
- <script src="../js/myprofile-vue.js" defer></script>
+ <script src="js/myprofile-vue.js" defer></script>
+ <script src="js/googleapi.js"></script>
 <!--
     
 TemplateMo 553 Xtra Blog
@@ -34,19 +35,19 @@ https://templatemo.com/tm-553-xtra-blog
             </div>
             <nav class="tm-nav" id="tm-nav">            
                 <ul>
-                    <li class="tm-nav-item"><a href="index.html" class="tm-nav-link">
+                    <li class="tm-nav-item"><a href="/" class="tm-nav-link">
                         <i class="fas fa-home"></i>
                         Home
                     </a></li>
-                    <li class="tm-nav-item"><a href="calendar.html" class="tm-nav-link">
+                    <li class="tm-nav-item"><a href="calendar" class="tm-nav-link">
                         <i class="fas fa-calendar-plus"></i>
                         Calendar
                     </a></li>
-                    <li class="tm-nav-item"><a href="mymeeting.html" class="tm-nav-link">
+                    <li class="tm-nav-item"><a href="mymeeting" class="tm-nav-link">
                         <i class="fas fa-calendar"></i>
                         My Meeting
                     </a></li>
-                    <li class="tm-nav-item active"><a href="myprofile.html" class="tm-nav-link">
+                    <li class="tm-nav-item active"><a href="myprofile" class="tm-nav-link">
                         <i class="fas fa-user"></i>
                         My Profile
                     </a></li>
@@ -54,10 +55,17 @@ https://templatemo.com/tm-553-xtra-blog
                 </ul>
             </nav>
             
-
-           
             </p>
-            <button onclick="signOut()" id="sign-out-button">Sign Out</button>
+            <a href="/logout" id="sign-out-button">Sign out</a>
+            <!-- <button onclick="signOut()" id="sign-out-button">Sign Out</button>
+            <script>
+                function signOut() {
+                    var auth2 = gapi.auth2.getAuthInstance();
+                    auth2.signOut().then(function () {
+                        console.log("User signed out.");
+                    });
+                }
+            </script> -->
         </div>
     </header>
 
@@ -66,17 +74,18 @@ https://templatemo.com/tm-553-xtra-blog
         <div class="w3ls-contact">
             <!-- form starts here -->
             <form action="#" method="post">
+            <img src= <%= user.picture %> alt="">
             <div class="agile-field-txt">
                 <label>
                 Name :</label>
                 <div class="mr_agilemain">
                 <div class="left-wthree">
-                    <input type="text" name="name" placeholder=" " :style="{backgroundColor: textColor}" :readonly="!isEditing">
+                    <input type="text" name="name" value= <%= user.firstname %> :style="{backgroundColor: textColor}" :readonly="!isEditing">
                     <label class="bot_w3">
                     First Name</label>
                 </div>
                 <div class="left-wthree">
-                    <input type="text" name="name" placeholder=" " :style="{backgroundColor: textColor}" :readonly="!isEditing">
+                    <input type="text" name="name" value= <%= user.lastname %> :style="{backgroundColor: textColor}" :readonly="!isEditing">
                     <label class="bot_w3">
                     Last Name</label>
                 </div>
@@ -85,7 +94,7 @@ https://templatemo.com/tm-553-xtra-blog
             <div class="agile-field-txt">
                 <label>
                 Email:</label>
-                <input type="text" name="name" placeholder=" " value="Example@gmail.com" style="background-color: #ccc" readonly/>
+                <input type="text" name="name" value= <%= user.email %> value="Example@gmail.com" style="background-color: #ccc" readonly/>
             </div>
             <div class="agile-field-txt">
                 <label>

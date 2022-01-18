@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Smeetrue</title>
+    <meta name="google-signin-client_id" content="414524429120-luneb60d6lof9ebf5j97qqqo6u5it3o1.apps.googleusercontent.com">
+	<script src="https://apis.google.com/js/platform.js" async defer></script>
+    <link rel="stylesheet" href="fontawesome/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Source+Sans+Pro&display=swap" rel="stylesheet">
+    <link href="css/bootstrap.min.css" rel="stylesheet">
+    <link href="css/style.css" rel="stylesheet">
+    <link href="css/index.css" rel="stylesheet">
+    <script src="js/googleapi.js"></script>
+
+
+</head>
+<body>
+	<header class="tm-header" id="tm-header">
+        <div class="tm-header-wrapper">
+            <button class="navbar-toggler" type="button" aria-label="Toggle navigation">
+                <i class="fas fa-bars"></i>
+            </button>
+            <div class="tm-site-header">
+                <div class="mb-3 mx-auto tm-site-logo"><i class="fas fa-book-open fa-2x"></i></div>            
+                <h1 class="text-center"style="font-family:'Source Sans Pro', sans-serif">Smeetrue</h1>
+            </div>
+            
+            <nav class="tm-nav" id="tm-nav">            
+                <ul>
+                    <li class="tm-nav-item active"><a href="/" class="tm-nav-link">
+                        <i class="fas fa-home"></i>
+                        Home
+                    </a></li>
+                    <li class="tm-nav-item"><a href="calendar" class="tm-nav-link">
+                        <i class="fas fa-calendar-plus"></i>
+                        Calendar
+                    </a></li>
+                    <li class="tm-nav-item"><a href="mymeeting" class="tm-nav-link">
+                        <i class="fas fa-calendar"></i>
+                        My Meeting
+                    </a></li>
+                    <li class="tm-nav-item"><a href="myprofile" class="tm-nav-link">
+                        <i class="fas fa-user"></i>
+                        My Profile
+                    </a></li>
+                </ul>
+            </nav>
+        
+            </p>
+            <!-- <button onclick="signOut()" id="sign-out-button">Sign Out</button>
+            <script>
+                function signOut() {
+                    var auth2 = gapi.auth2.getAuthInstance();
+                    auth2.signOut().then(function () {
+                        console.log("User signed out.");
+                    });
+                }
+            </script> -->
+        </div>
+    </header>
+
+    <div class="container-fluid" >
+        <main class="tm-main">
+
+            <div class="button-outer">
+                <div class="g-signin2" style="display:inline-block;" data-onsuccess="onSignIn"></div>
+            </div>    
+            <script>
+                function onSignIn(googleUser) {
+                    var id_token = googleUser.getAuthResponse().id_token;
+
+                    var xhr = new XMLHttpRequest();
+                    xhr.open("POST", "/login");
+                    xhr.setRequestHeader("Content-Type", "application/json");
+                    xhr.onload = function () {
+                        console.log("Signed in as: " + xhr.responseText);
+                        if (xhr.responseText === "success") {
+                        signOut();
+                        location.assign("/myprofile");
+                        }
+                    };
+                    xhr.send(JSON.stringify({ token: id_token }));
+                }
+            </script>
+            
+            <div class="description-box">
+                <h1 style="text-decoration: underline; height: 5rem;">Smeetrue introduction</h1>
+                <p style="color: black;">Welcome to Smeetrue, this is a meeting room reservation assistant. Here we provide all kinds of services on meeting room managements, such as booking a reservation, managing the meetings you host.</p>
+                <div style="width: 100%; text-align: right;">
+                    <a href="https://alltwcompany.com/nd-C-90414728-%E5%A2%A8%E5%9F%8E%E8%B3%87%E8%A8%8A%E6%9C%89%E9%99%90%E5%85%AC%E5%8F%B8.html" target="_blank" style="text-decoration: underline;">About us</a>
+                </div>
+            </div>
+        </main>
+    </div>
+</body>
+</html>
