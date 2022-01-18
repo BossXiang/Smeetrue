@@ -780,7 +780,7 @@ a:hover figcaption {
   top: 0%;
   bottom: 0;
   right: 0;
-  height: 85%;
+  height: 83%;
   overflow: hidden;
   background-color: #53d8d8;
   border-radius: 10px;
@@ -855,6 +855,7 @@ li.calendar-date-active:hover {
   color: #000;
   display: inline-block;
   text-align: center;
+  font-size:23px;
 }
 
 /* Sign in & sign out button */

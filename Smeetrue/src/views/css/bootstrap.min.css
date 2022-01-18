@@ -1654,6 +1654,8 @@ pre code {
   padding: 0.75rem;
   vertical-align: top;
   border-top: 1px solid #dee2e6;
+  text-align: center;
+	vertical-align: middle!important;
 }
 .table thead th {
   vertical-align: bottom;
@@ -9429,6 +9431,8 @@ a.text-dark:hover {
   .table td,
   .table th {
     background-color: #fff !important;
+    text-align: center;
+		vertical-align: middle!important;
   }
   .table-bordered td,
   .table-bordered th {
