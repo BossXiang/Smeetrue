@@ -9204,6 +9204,8 @@ button.bg-dark:hover {
 }
 .text-center {
   text-align: center !important;
+  height: 10%;
+  width: 20%;
 }
 @media (min-width: 576px) {
   .text-sm-left {
