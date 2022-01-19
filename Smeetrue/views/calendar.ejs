@@ -81,81 +81,26 @@
         </div>
 
         <div class="calendar-time-table" v-if="isShowDateInfo" >
+            <label style="font-size: 30px;">{{ formattedDate }}</label>
             <table>
                 <tr>
-                  <td>&nbsp;</td>
-                  <th>9:00</th>
-                  <th>10:00</th>
-                  <th>11:00</th>
-                  <th>12:00</th>
-                  <th>13:00</th>
-                  <th>14:00</th>
-                  <th>15:00</th>
-                  <th>16:00</th>
-                  <th>17:00</th>
+                    <td>&nbsp;</td>
+                    <td style="font-size:15px">&nbsp;&nbsp;9:00~</br>10:00 </td>
+                    <td style="font-size:15px">10:00~</br>11:00 </td>
+                    <td style="font-size:15px">11:00~</br>12:00 </td>
+                    <td style="font-size:15px">12:00~</br>13:00 </td>
+                    <td style="font-size:15px">13:00~</br>14:00 </td>
+                    <td style="font-size:15px">14:00~</br>15:00 </td>
+                    <td style="font-size:15px">15:00~</br>16:00 </td>
+                    <td style="font-size:15px">16:00~</br>17:00 </td>
+                    <td style="font-size:15px">17:00~</br>18:00 </td>
                 </tr>
-                <tr>
-                  <th>RoomA</th>
-                  <td>&nbsp;</td>
-                  <td>&nbsp;</td>
-                  <td style="background-color: saddlebrown;"></td>
-                  <td style="background-color: saddlebrown;">&nbsp;</td>
-                  <td>&nbsp;</td>
-                  <td>&nbsp;</td>
-                  <td>&nbsp;</td>
-                  <td>&nbsp;</td>
-                  <td>&nbsp;</td>
+                <tr v-for="(roomName, index) in roomNames">
+                    <th style="font-size:15px"> {{roomName}} </th>
+                    <td v-for="avail in roomAvail[index]" :style="avail ? 'background-color: saddlebrown;' : ''">&nbsp;</td>
                 </tr>
-                <tr>
-                  <th>RoomB</th>
-                  <td>&nbsp;</td>
-                  <td>&nbsp;</td>
-                  <td>&nbsp;</td>
-                  <td>&nbsp;</td>
-                  <td style="background-color: saddlebrown;">&nbsp;</td>
-                  <td style="background-color: saddlebrown;">&nbsp;</td>
-                  <td style="background-color: saddlebrown;">&nbsp;</td>
-                  <td>&nbsp;</td>
-                  <td>&nbsp;</td>
-                </tr>
-                <tr>
-                  <th>RoomC</th>
-                  <td>&nbsp;</td>
-                  <td>&nbsp;</td>
-                  <td>&nbsp;</td>
-                  <td>&nbsp;</td>
-                  <td>&nbsp;</td>
-                  <td>&nbsp;</td>
-                  <td style="background-color: saddlebrown;">&nbsp;</td>
-                  <td>&nbsp;</td>
-                  <td>&nbsp;</td>
-                </tr>
-                <tr>
-                  <th>RoomD</th>
-                  <td>&nbsp;</td>
-                  <td>&nbsp;</td>
-                  <td>&nbsp;</td>
-                  <td>&nbsp;</td>
-                  <td>&nbsp;</td>
-                  <td>&nbsp;</td>
-                  <td>&nbsp;</td>
-                  <td>&nbsp;</td>
-                  <td>&nbsp;</td>
-                </tr>
-                <tr>
-                    <th>RoomE</th>
-                    <td style="background-color: saddlebrown;">&nbsp;</td>
-                    <td style="background-color: saddlebrown;">&nbsp;</td>
-                    <td>&nbsp;</td>
-                    <td>&nbsp;</td>
-                    <td>&nbsp;</td>
-                    <td>&nbsp;</td>
-                    <td>&nbsp;</td>
-                    <td>&nbsp;</td>
-                    <td>&nbsp;</td>
-                  </tr>
             </table>
-            <button class="calendar-button" @click="changeState(2)">Book!</button>
+            <button class="calendar-button" @click="changeState(2)" style="height:36px; width: 120px; margin-left: 50%;">Book!</button>
         </div>
 
         <!-- <div class="calendar-pop-up-screen" v-if="isShowDateInfo">
@@ -175,6 +120,7 @@
         <div class="container-fluid" id = "calendar-booking-page" v-if="isShowRoomView" style="margin-left: 10%;margin-right: 10%;margin-top: 2%;margin-bottom: 5%;">
             <div class="w3ls-contact">
                 <!-- form starts here -->
+               
                 <form action="" method="post" onsubmit="return false">
                     <div class="agile-field-txt">
                         <label>
@@ -191,12 +137,32 @@
                         Time :</label>
                         <div class="mr_agilemain">
                         <div class="left-wthree">
-                            <input type="text" name="name" placeholder=" ">
+                            <select>
+                                <option value ="9">9:00</option>
+                                <option value ="10">10:00</option>
+                                <option value="11">11:00</option>
+                                <option value="12">12:00</option>
+                                <option value ="13">13:00</option>
+                                <option value ="14">14:00</option>
+                                <option value="15">15:00</option>
+                                <option value="16">16:00</option>
+                                <option value="17">17:00</option>
+                              </select>
                             <label class="bot_w3">
                             Start Time</label>
                         </div>
                         <div class="left-wthree">
-                            <input type="text" name="name" placeholder=" ">
+                            <select>
+                                <option value ="10">10:00</option>
+                                <option value="11">11:00</option>
+                                <option value="12">12:00</option>
+                                <option value ="13">13:00</option>
+                                <option value ="14">14:00</option>
+                                <option value="15">15:00</option>
+                                <option value="16">16:00</option>
+                                <option value="17">17:00</option>
+                                <option value="18">18:00</option>
+                              </select>
                             <label class="bot_w3">
                             End Time</label>
                         </div>
@@ -205,21 +171,24 @@
                     <div class="agile-field-txt">
                         <label>
                         Attendee:</label>
-                        <input type="text" name="name" placeholder="Input the invitee email" v-model="inputInvitee"/>
-                        <button style="float:right;margin-top:1%;margin-right: 1%;width: 45px;height: 33px;line-height: 16px;" class="form-button" @click="addNewInvitee()">+</button>
+                       
+                        <input type="text" name="name" placeholder="Input the invitee email" v-model="inputInvitee" style="width:310px; height:50px;margin-left: 10px;" />
+                        <button style="float:right;width: 49px;height: 49px;margin-left: 2px;" class="form-button" @click="addNewInvitee();">+</button>
                     </div>
 
                     <div style="width: 100%;">
+                        
                         <label>Total Participants: {{invitees.length}}</label>
                     </div>
 
                     <div style="width: 550px;height: 200px; overflow-x:hidden;">
-                        <p v-for="(invitee, index) in invitees"> {{invitee}} <button style="float:right;margin-top:1%;margin-right: 1%;width: 45px;height: 33px;line-height: 16px;" class="form-button" @click="removeInvitee(index)">—</button></p>
+                        <p v-for="(invitee, index) in invitees"> {{invitee}} <button style="float:right;margin-top:1%;margin-right: 1%;width: 38px;height: 33px;line-height: 0px;" class="form-button" @click="removeInvitee(index)">—</button></p>
                     </div>
                     
-                    <div style="text-align: right; width: 100%;">
-                        <button class="form-button">Book</button>
-                        <button class="form-button" @click="changeState(1)">Back</button>
+                    
+                    <div style="text-align: right; width: 100%;margin-top: 50px;">
+                        <button class="calendar-button" style="line-height: 30px;" >Book</button>
+                        <button class="calendar-button" style="margin-left: 12px;background-color:rgb(255, 62, 62); line-height: 30px;" @click="changeState(1)">Back</button>
                     </div>
                 </form>
             </div>
@@ -227,6 +196,7 @@
     </div>
 
 
+    
     
     
     

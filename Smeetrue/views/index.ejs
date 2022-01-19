@@ -50,15 +50,9 @@
             </nav>
         
             </p>
-            <!-- <button onclick="signOut()" id="sign-out-button">Sign Out</button>
-            <script>
-                function signOut() {
-                    var auth2 = gapi.auth2.getAuthInstance();
-                    auth2.signOut().then(function () {
-                        console.log("User signed out.");
-                    });
-                }
-            </script> -->
+            <% if(isLoggedIn) {%>
+                <a href="/logout" id="sign-out-button">Sign out</a>
+            <% } %>
         </div>
     </header>
 
@@ -66,8 +60,11 @@
         <main class="tm-main">
 
             <div class="button-outer">
-                <div class="g-signin2" style="display:inline-block;" data-onsuccess="onSignIn"></div>
+                <% if(!isLoggedIn) {%>
+                    <div class="g-signin2" style="display:inline-block;" data-onsuccess="onSignIn"></div>
+                <% } %>
             </div>    
+
             <script>
                 function onSignIn(googleUser) {
                     var id_token = googleUser.getAuthResponse().id_token;

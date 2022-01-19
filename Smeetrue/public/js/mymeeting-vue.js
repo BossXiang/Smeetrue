@@ -3,6 +3,7 @@ const app = Vue.createApp({
     return {
       identity: "Host",
       isEditing: false,
+      isShowPopUpMsg: false,
       state: 0,
       currMonth: 0,
       startWeekDays: [6, 2, 2, 5, 0, 3, 5, 1, 4, 6, 2, 4],
@@ -95,6 +96,9 @@ const app = Vue.createApp({
     },
     setEditMode(value) {
       this.isEditing = value;
+    },
+    popupMsg(value) {
+      this.isShowPopUpMsg = value;
     },
     addMonth() {
       if (this.currMonth < 11) {
