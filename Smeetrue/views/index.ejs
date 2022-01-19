@@ -11,11 +11,13 @@
     <link href="css/bootstrap.min.css" rel="stylesheet">
     <link href="css/style.css" rel="stylesheet">
     <link href="css/index.css" rel="stylesheet">
+    <script src="https://unpkg.com/vue@next" defer></script>
+    <script src="js/index-vue.js" defer></script>
     <script src="js/googleapi.js"></script>
 
 
 </head>
-<body>
+<body id="index">
 	<header class="tm-header" id="tm-header">
         <div class="tm-header-wrapper">
             <button class="navbar-toggler" type="button" aria-label="Toggle navigation">
@@ -60,7 +62,7 @@
         </div>
     </header>
 
-    <div class="container-fluid" >
+    <div class="container-fluid">
         <main class="tm-main">
 
             <div class="button-outer">
@@ -83,6 +85,7 @@
                     xhr.send(JSON.stringify({ token: id_token }));
                 }
             </script>
+            
             
             <div class="description-box">
                 <h1 style="text-decoration: underline; height: 5rem;">Smeetrue introduction</h1>
