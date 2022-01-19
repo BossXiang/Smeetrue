@@ -1,6 +1,17 @@
 const app = Vue.createApp({
   data() {
     return {
+      //fixed area
+      roomNames: ["RoomA", "RoomB", "RoomC", "RoomD", "RoomE"],
+      roomAvail: [
+        [false, false, true, false, false, false, false, false, false],
+        [false, false, false, false, true, true, false, false, false],
+        [false, false, false, false, false, false, false, false, false],
+        [false, false, false, false, false, false, false, false, false],
+        [false, false, false, false, false, false, false, false, false],
+      ],
+
+      //area for vue
       state: 0,
       startWeekDays: [6, 2, 2, 5, 0, 3, 5, 1, 4, 6, 2, 4],
       dayOfMonths: [31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31],
@@ -19,18 +30,27 @@ const app = Vue.createApp({
         "December",
       ],
       currMonth: 0,
+      dateSelected: 0,
       invitees: [
         "Tommy_example1@gamil.com",
         "John_example2@gamil.com",
-        "Kris_example4@gamil.com",
-        "Jess_example1@gamil.com",
         "haha_example2@gamil.com",
-        "Kiki_example4@gamil.com",
       ],
       inputInvitee: "",
+      startTimeTxt: "",
+      endTimeTxt: "",
     };
   },
   computed: {
+    formattedDate() {
+      console.log(this.dateSelected);
+      return (
+        "2022/" +
+        String(this.currMonth + 1) +
+        "/" +
+        String(this.dateSelected + 1)
+      );
+    },
     preDatesList() {
       dateList = [];
       for (let i = 0; i < this.startWeekDays[this.currMonth]; i++) {
@@ -101,10 +121,12 @@ const app = Vue.createApp({
     },
     onDateClick(index) {
       if (index >= 0 && index < this.dayOfMonths[this.currMonth]) {
+        this.dateSelected = index;
         this.changeState(1);
       }
     },
   },
+  mounted() {},
 });
 
 app.mount("#calendar");
