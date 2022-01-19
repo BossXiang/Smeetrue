@@ -73,7 +73,7 @@ https://templatemo.com/tm-553-xtra-blog
     <div class="container-fluid" id = "myprofile-page" style="margin-left: 10%;margin-right: 10%;margin-top: 2%;margin-bottom: 5%;">
         <div class="w3ls-contact">
             <!-- form starts here -->
-            <form action="#" method="post">
+            <form action="" method="post" onsubmit="return false">
             <img src= <%= user.picture %> alt="">
             <div class="agile-field-txt">
                 <label>
@@ -94,27 +94,27 @@ https://templatemo.com/tm-553-xtra-blog
             <div class="agile-field-txt">
                 <label>
                 Email:</label>
-                <input type="text" name="name" value= <%= user.email %> value="Example@gmail.com" style="background-color: #ccc" readonly/>
+                <input type="text" name="name" :value="email" style="background-color: #ccc" readonly/>
             </div>
             <div class="agile-field-txt">
                 <label>
-                Gender:</label>
-                <input type="text" name="name" placeholder=" " :style="{backgroundColor: textColor}"  :readonly="!isEditing"/>
+                Gender: </label>
+                <input type="text" name="name" placeholder=" " v-model="gender" :style="{backgroundColor: textColor}"  :readonly="!isEditing"/>
             </div>
             <div class="agile-field-txt">
                 <label>
                 Occupation:</label>
-                <input type="text" name="name" placeholder=" " :style="{backgroundColor: textColor}"  :readonly="!isEditing"/>
+                <input type="text" name="name" placeholder=" " v-model="occupation" :style="{backgroundColor: textColor}"  :readonly="!isEditing"/>
             </div>
             <div class="agile-field-txt">
                 <label>
                 Personal Information</label>
-                <textarea name="Comments" placeholder="Personal information details" :style="{backgroundColor: textColor}"  :readonly="!isEditing"></textarea>
+                <textarea name="Comments" placeholder="Personal information details" v-model="personalInfo" :style="{backgroundColor: textColor}"  :readonly="!isEditing"></textarea>
             </div>
             
             <div style="text-align: right; width: 100%;">
-                <button style="margin-right: 3%;" class="form-button" v-if="isEditing" @click="setEditing(false)">Save</button>
-                <button style="margin-right: 3%;" class="form-button" v-if="isEditing" @click="setEditing(false)">Cancel</button>
+                <button style="margin-right: 3%;" class="form-button" v-if="isEditing" @click="editSave()">Save</button>
+                <button style="margin-right: 3%;" class="form-button" v-if="isEditing" @click="editCancel()">Cancel</button>
                 <button style="margin-right: 3%;" class="form-button" v-if="isEditing===false" @click="setEditing(true)">Edit</button>
             </div>
 

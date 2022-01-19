@@ -7,6 +7,9 @@ const cors = require("cors");
 const app = express();
 const PORT = process.env.PORT || 8000;
 
+//variables
+var isLoggedIn = false;
+
 // Define paths for Express config
 const publicDirectoryPath = path.join(__dirname, "../public");
 const viewsPath = path.join(__dirname, "../src/views/css");
@@ -62,6 +65,24 @@ app.post("/api/profiles", (req, res) => {
       res.status(400).send(profile);
     });
 });
+app.post("/api/updateProfile", (req, res) => {
+  console.log(req.body);
+  Profile.updateOne(
+    { email: req.body.email },
+    {
+      name: req.body.name,
+      gender: req.body.gender,
+      occupation: req.body.occupation,
+      personalInfo: req.body.personalInfo,
+    }
+  )
+    .then((profile) => {
+      res.send(profile);
+    })
+    .catch((e) => {
+      res.status(500).send(e);
+    });
+});
 
 const Meeting = require("./models/meeting");
 app.get("/api/meetings", (req, res) => {
@@ -101,8 +122,8 @@ app.post("/api/meetings", (req, res) => {
 // Setup static directory to serve
 app.use(express.static(publicDirectoryPath));
 
-app.get("/", (req, res) => {
-  res.render("index");
+app.get("/", isAuthenticated, (req, res) => {
+  res.render("index", { isLoggedIn });
 });
 
 app.get("/login", (req, res) => {
@@ -141,6 +162,7 @@ app.get("/protectedroute", checkAuthenticated, (req, res) => {
 
 app.get("/logout", (req, res) => {
   res.clearCookie("session-token");
+  isLoggedIn = false;
   res.redirect("/");
 });
 
@@ -159,6 +181,21 @@ app.get("/myprofile", checkAuthenticated, (req, res) => {
   res.render("myprofile", { user });
 });
 
+app.get("/info/userProfile", checkAuthenticated, (req, res) => {
+  let user = req.user;
+  const _email = user.email;
+  Profile.findOne({ email: _email })
+    .then((profile) => {
+      if (!profile) {
+        return res.status(404).send();
+      }
+      res.status(200).send(profile);
+    })
+    .catch((e) => {
+      res.status(500).send(e);
+    });
+});
+
 function isAuthenticated(req, res, next) {
   let token = req.cookies["session-token"];
   async function verify() {
@@ -170,13 +207,12 @@ function isAuthenticated(req, res, next) {
   }
   verify()
     .then(() => {
-      console.log("test1");
-      return true;
+      isLoggedIn = true;
       next();
     })
     .catch((err) => {
-      console.log("test2");
-      return false;
+      isLoggedIn = false;
+      next();
     });
 }
 
