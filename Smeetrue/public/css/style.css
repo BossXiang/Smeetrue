@@ -85,7 +85,7 @@ hr {
 }
 
 .tm-main {
-  margin-left: 300px;
+  margin-left: 400px;
   padding: 80px 100px 25px;
 }
 
@@ -780,7 +780,7 @@ a:hover figcaption {
   top: 0%;
   bottom: 0;
   right: 0;
-  height: 85%;
+  height: 95%;
   overflow: hidden;
   background-color: #53d8d8;
   border-radius: 10px;
