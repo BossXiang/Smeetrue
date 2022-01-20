@@ -14,7 +14,7 @@ const app = Vue.createApp({
       ],
 
       //user basic profile
-      id: "",
+      hostEmail: "",
       hostName: "",
 
       //area for vue
@@ -38,9 +38,9 @@ const app = Vue.createApp({
       currMonth: 0,
       dateSelected: 0,
       invitees: [
-        "Tommy_example1@gamil.com",
-        "John_example2@gamil.com",
-        "haha_example2@gamil.com",
+        "b10815001@gapps.ntust.edu.tw",
+        "b10815002@gapps.ntust.edu.tw",
+        "b10815003@gapps.ntust.edu.tw",
       ],
       inputInvitee: "",
       meetingName: "",
@@ -110,6 +110,16 @@ const app = Vue.createApp({
     },
     addNewInvitee() {
       if (this.inputInvitee === "") return;
+      if (this.inputInvitee === this.hostEmail) {
+        alert("You cannot invite yourself!");
+        return;
+      }
+      for (var i in this.invitees) {
+        if (this.inputInvitee === this.invitees[i]) {
+          alert(this.inputInvitee + " has already been invited!");
+          return;
+        }
+      }
       var xhr = new XMLHttpRequest();
       valid = true;
       xhr.open("GET", "/api/profiles/" + this.inputInvitee, false);
@@ -221,7 +231,7 @@ const app = Vue.createApp({
       };
       xhr.send(
         JSON.stringify({
-          hostID: this.id,
+          hostEmail: this.hostEmail,
           hostName: this.hostName,
           name: this.meetingName,
           roomID: this.roomSelected,
@@ -230,7 +240,7 @@ const app = Vue.createApp({
           startTime: st,
           endTime: et,
           description: "description area",
-          attendeeIDs: this.invitees,
+          attendeeEmails: this.invitees,
         })
       );
     },
@@ -244,7 +254,7 @@ const app = Vue.createApp({
           if (this.status === 200) {
             const result = JSON.parse(this.responseText);
             console.log(result);
-            comp.id = result._id;
+            comp.hostEmail = result.email;
             comp.hostName = result.name;
           } else {
             console.log(this.status, this.statusText);
