@@ -8,7 +8,7 @@ const Meeting = mongoose.model("Meeting", {
   hostName: {
     type: String,
   },
-  Name: {
+  name: {
     type: String,
   },
   roomID: {

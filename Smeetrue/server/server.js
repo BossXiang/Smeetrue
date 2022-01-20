@@ -67,7 +67,6 @@ app.post("/api/createProfile", (req, res) => {
     });
 });
 app.post("/api/updateProfile", (req, res) => {
-  console.log(req.body);
   Profile.updateOne(
     { email: req.body.email },
     {
@@ -104,6 +103,25 @@ app.get("/api/meetings/:id", (req, res) => {
         return res.status(404).send();
       }
       res.send(meeting);
+    })
+    .catch((e) => {
+      res.status(500).send(e);
+    });
+});
+app.post("/api/updateMeeting", (req, res) => {
+  console.log(req.body);
+  Meeting.updateOne(
+    { _id: req.body._id },
+    {
+      name: req.body.name,
+      hostName: req.body.hostName,
+      startTime: req.body.startTime,
+      endTime: req.body.endTime,
+      attendeeEmails: req.attendeeEmails,
+    }
+  )
+    .then((profile) => {
+      res.send(profile);
     })
     .catch((e) => {
       res.status(500).send(e);
@@ -146,8 +164,42 @@ app.post("/api/createMeeting", (req, res) => {
 });
 app.delete("/api/deleteMeeting", (req, res) => {});
 app.post("/api/updateMeeting", (req, res) => {});
+app.get("/api/meeting/:id", (req, res) => {
+  Meeting.find({ _id: req.params.id })
+    .then((meetings) => {
+      res.status(200).send(meetings);
+    })
+    .catch((e) => {
+      res.status(500).send();
+    });
+});
 app.get("/api/meetings/:month/:day", (req, res) => {
   Meeting.find({ month: req.params.month, day: req.params.day })
+    .then((meetings) => {
+      res.status(200).send(meetings);
+    })
+    .catch((e) => {
+      res.status(500).send();
+    });
+});
+app.get("/api/getMeetings/:month/:email", (req, res) => {
+  Meeting.find({
+    month: req.params.month,
+    hostEmail: req.params.email,
+  })
+    .then((meetings) => {
+      res.status(200).send(meetings);
+    })
+    .catch((e) => {
+      res.status(500).send();
+    });
+});
+app.get("/api/getMeetings/:month/:day/:email", (req, res) => {
+  Meeting.find({
+    month: req.params.month,
+    day: req.params.day,
+    hostEmail: req.params.email,
+  })
     .then((meetings) => {
       res.status(200).send(meetings);
     })
