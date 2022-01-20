@@ -1,15 +1,21 @@
 const app = Vue.createApp({
   data() {
     return {
-      //fixed area
+      //room
+      roomAvailST: 9,
+      roomAvailET: 18,
       roomNames: ["RoomA", "RoomB", "RoomC", "RoomD", "RoomE"],
-      roomAvail: [
+      roomOccupied: [
         [false, false, true, false, false, false, false, false, false],
         [false, false, false, false, true, true, false, false, false],
         [false, false, false, false, false, false, false, false, false],
         [false, false, false, false, false, false, false, false, false],
         [false, false, false, false, false, false, false, false, false],
       ],
+
+      //user basic profile
+      id: "",
+      hostName: "",
 
       //area for vue
       state: 0,
@@ -37,13 +43,14 @@ const app = Vue.createApp({
         "haha_example2@gamil.com",
       ],
       inputInvitee: "",
-      startTimeTxt: "",
-      endTimeTxt: "",
+      meetingName: "",
+      startTime: "9",
+      endTime: "10",
+      roomSelected: "0",
     };
   },
   computed: {
     formattedDate() {
-      console.log(this.dateSelected);
       return (
         "2022/" +
         String(this.currMonth + 1) +
@@ -103,6 +110,19 @@ const app = Vue.createApp({
     },
     addNewInvitee() {
       if (this.inputInvitee === "") return;
+      var xhr = new XMLHttpRequest();
+      valid = true;
+      xhr.open("GET", "/api/profiles/" + this.inputInvitee, false);
+      xhr.onreadystatechange = function () {
+        if (this.readyState === XMLHttpRequest.DONE) {
+          if (this.status === 404 || this.status === 500) {
+            alert("This email is not valid");
+            valid = false;
+          }
+        }
+      };
+      xhr.send();
+      if (!valid) return;
       this.invitees.push(this.inputInvitee);
       this.inputInvitee = "";
     },
@@ -122,11 +142,121 @@ const app = Vue.createApp({
     onDateClick(index) {
       if (index >= 0 && index < this.dayOfMonths[this.currMonth]) {
         this.dateSelected = index;
+        this.refreshRoomAvail();
         this.changeState(1);
       }
     },
+    refreshRoomAvail() {
+      var comp = this;
+      var xhr = new XMLHttpRequest();
+      var url = "/api/meetings/" + this.currMonth + "/" + this.dateSelected;
+      xhr.open("GET", url, false);
+      xhr.onreadystatechange = function () {
+        if (this.readyState === XMLHttpRequest.DONE) {
+          if (this.status === 200) {
+            const result = JSON.parse(this.responseText);
+            for (var i = comp.roomAvailST; i < comp.roomAvailET; i++) {
+              for (var j = 0; j < 5; j++) {
+                comp.roomOccupied[j][i - comp.roomAvailST] = false;
+              }
+            }
+            for (var i = 0; i < result.length; i++) {
+              var obj = result[i];
+              const roomId = parseInt(result[i].roomID);
+              for (var t = obj.startTime; t < obj.endTime; t++) {
+                comp.roomOccupied[roomId][t - comp.roomAvailST] = true;
+              }
+            }
+          } else {
+            console.log(this.status, this.statusText);
+          }
+        }
+      };
+      xhr.send();
+    },
+    reserveMeeting() {
+      st = parseInt(this.startTime);
+      et = parseInt(this.endTime);
+      if (st >= et) {
+        alert("Time error!");
+        return;
+      }
+      if (
+        this.hostName === "" ||
+        this.meetingName === "" ||
+        this.roomSelected === ""
+      ) {
+        alert("Incomplete info!");
+        return;
+      }
+      var conflict = false;
+      const roomId = parseInt(this.roomSelected);
+      for (var t = st; t < et; t++) {
+        if (this.roomOccupied[roomId][t - this.roomAvailST]) {
+          conflict = true;
+          break;
+        }
+      }
+      if (conflict) {
+        alert("Meeting room is already booked by others!");
+        return;
+      }
+      //send request
+      const xhr = new XMLHttpRequest();
+      xhr.open("POST", "/api/createMeeting");
+      xhr.setRequestHeader("Content-Type", "application/json");
+      xhr.onreadystatechange = () => {
+        const DONE = 4;
+        const CREATED = 201;
+        if (xhr.readyState === DONE) {
+          if (xhr.status === CREATED || xhr.status === 200) {
+            //this.response = xhr.response;
+            console.log(xhr.response);
+            alert("successfully booked!");
+            window.location.href = "/calendar";
+          } else {
+            this.response = "Error: " + xhr.status;
+          }
+        }
+      };
+      xhr.send(
+        JSON.stringify({
+          hostID: this.id,
+          hostName: this.hostName,
+          name: this.meetingName,
+          roomID: this.roomSelected,
+          month: this.currMonth,
+          day: this.dateSelected,
+          startTime: st,
+          endTime: et,
+          description: "description area",
+          attendeeIDs: this.invitees,
+        })
+      );
+    },
+    loadProfile() {
+      var comp = this;
+      var xhr = new XMLHttpRequest();
+      var url = "/info/userProfile";
+      xhr.open("GET", url, false);
+      xhr.onreadystatechange = function () {
+        if (this.readyState === XMLHttpRequest.DONE) {
+          if (this.status === 200) {
+            const result = JSON.parse(this.responseText);
+            console.log(result);
+            comp.id = result._id;
+            comp.hostName = result.name;
+          } else {
+            console.log(this.status, this.statusText);
+          }
+        }
+      };
+      xhr.send();
+    },
   },
-  mounted() {},
+  mounted() {
+    this.loadProfile();
+  },
 });
 
 app.mount("#calendar");

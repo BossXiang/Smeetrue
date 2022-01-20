@@ -20,12 +20,16 @@ const Profile = mongoose.model("Profile", {
   personalInfo: {
     type: String,
   },
-  meetingIDs: {
-    type: String,
-  },
-  hostMeetingIDs: {
-    type: String,
-  },
+  meetingIDs: [
+    {
+      type: String,
+    },
+  ],
+  hostMeetingIDs: [
+    {
+      type: String,
+    },
+  ],
 });
 
 module.exports = Profile;
