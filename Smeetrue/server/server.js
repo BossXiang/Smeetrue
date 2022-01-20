@@ -109,12 +109,35 @@ app.get("/api/meetings/:id", (req, res) => {
       res.status(500).send(e);
     });
 });
+app.post("/api/profile/addMeeting/:email/:id", (req, res) => {
+  console.log(req.body);
+  addMeeting(req.params.email, req.params.id);
+  res.send("Finished!");
+});
+function addMeeting(_email, _id) {
+  Profile.updateOne(
+    { email: _email },
+    {
+      $push: { hostMeetingIDs: _id },
+    }
+  )
+    .then((profile) => {
+      res.send(profile);
+    })
+    .catch((e) => {
+      res.status(500).send(e);
+    });
+}
 app.post("/api/createMeeting", (req, res) => {
   const meeting = new Meeting(req.body);
-  console.log(req.body);
   meeting
     .save()
-    .then(() => {
+    .then((result) => {
+      const _id = result._id.toString();
+      addMeeting(req.body.hostEmail, _id);
+      for (var i in req.body.attendeeEmails) {
+        addMeeting(req.body.attendeeEmails[i], _id);
+      }
       res.status(201).send(meeting);
     })
     .catch((err) => {
@@ -134,47 +157,6 @@ app.get("/api/meetings/:month/:day", (req, res) => {
 });
 
 const Room = require("./models/room");
-app.post("/api/roomInit", (req, res) => {
-  Room.deleteMany({})
-    .then((result) => {
-      console.log(result);
-    })
-    .catch((err) => {
-      console.log(err);
-    });
-  const room1 = new Room({
-    id: "0",
-    name: "RoomA",
-    location: "location",
-    description: "description area",
-  }).save();
-  const room2 = new Room({
-    id: "1",
-    name: "RoomB",
-    location: "location",
-    description: "description area",
-  }).save();
-  const room3 = new Room({
-    id: "2",
-    name: "RoomC",
-    location: "location",
-    description: "description area",
-  }).save();
-  const room4 = new Room({
-    id: "3",
-    name: "RoomD",
-    location: "location",
-    description: "description area",
-  }).save();
-  const room5 = new Room({
-    id: "4",
-    name: "RoomE",
-    location: "location",
-    description: "description area",
-  }).save();
-  console.log("rooms successfully initialized!");
-  res.status(201).send();
-});
 app.get("/api/rooms", (req, res) => {
   Room.find({})
     .then((rooms) => {
@@ -329,6 +311,84 @@ function checkAuthenticated(req, res, next) {
       res.redirect("/login");
     });
 }
+
+//Create dummy data (profile & room)
+app.post("/api/dummyProfileInit", (req, res) => {
+  Profile.deleteMany({})
+    .then((result) => {
+      console.log(result);
+    })
+    .catch((err) => {
+      console.log(err);
+    });
+  for (var i = 1; i < 10; i++) {
+    const profile = new Profile({
+      email: "b1081500" + String(i) + "@gapps.ntust.edu.tw",
+      name: "同學" + String(i),
+      gender: "",
+      occupation: "",
+      personalInfo: "New comer!!",
+      meetingIDs: [],
+      hostMeetingIDs: [],
+    });
+    profile.save();
+  }
+  for (var i = 10; i < 66; i++) {
+    const profile = new Profile({
+      email: "b108150" + String(i) + "@gapps.ntust.edu.tw",
+      name: "同學" + String(i),
+      gender: "",
+      occupation: "",
+      personalInfo: "New comer!!",
+      meetingIDs: [],
+      hostMeetingIDs: [],
+    });
+    profile.save();
+  }
+  console.log("dummy profiles successfully initialized!");
+  res.status(201).send();
+});
+app.post("/api/roomInit", (req, res) => {
+  Room.deleteMany({})
+    .then((result) => {
+      console.log(result);
+    })
+    .catch((err) => {
+      console.log(err);
+    });
+  const room1 = new Room({
+    id: "0",
+    name: "RoomA",
+    location: "location",
+    description: "description area",
+  }).save();
+  const room2 = new Room({
+    id: "1",
+    name: "RoomB",
+    location: "location",
+    description: "description area",
+  }).save();
+  const room3 = new Room({
+    id: "2",
+    name: "RoomC",
+    location: "location",
+    description: "description area",
+  }).save();
+  const room4 = new Room({
+    id: "3",
+    name: "RoomD",
+    location: "location",
+    description: "description area",
+  }).save();
+  const room5 = new Room({
+    id: "4",
+    name: "RoomE",
+    location: "location",
+    description: "description area",
+  }).save();
+  console.log("rooms successfully initialized!");
+  res.status(201).send();
+});
 
 app.listen(PORT, () => {
   console.log("Server running on port " + PORT + "...");

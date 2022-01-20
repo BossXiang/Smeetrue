@@ -1,10 +1,7 @@
 const mongoose = require("mongoose");
 
 const Meeting = mongoose.model("Meeting", {
-  id: {
-    type: String,
-  },
-  hostID: {
+  hostEmail: {
     type: String,
     required: true,
   },
@@ -38,7 +35,7 @@ const Meeting = mongoose.model("Meeting", {
     type: String,
     default: "",
   },
-  attendeeIDs: [
+  attendeeEmails: [
     {
       type: String,
       default: "",
