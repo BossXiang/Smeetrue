@@ -93,11 +93,8 @@
         </div>
         
         <div id="meetingList" v-if = isShowMeetingList style="text-align: center; height: fit-content;">
-            <h1>2021/12/2</h1>
-            <label class="meetingListItem" @click="changeState(2)">MeetingA 10:00~11:00</label>
-            <label class="meetingListItem" @click="changeState(2)">MeetingA 11:00~12:00</label>
-            <label class="meetingListItem" @click="changeState(2)">MeetingB 14:00~15:00</label>
-            <label class="meetingListItem" @click="changeState(2)">MeetingC 15:00~16:00</label>
+            <h1>{{ formattedDate }}</h1>
+            <label v-for="(name, index) in listMeetings" class="meetingListItem" @click="onListMeetingClick(index)">{{ name }}</label>
         </div>
 
         <div class="container-fluid" id = "calendar-booking-page" v-if = isShowMeetingInfo style="z-index:100;position: relative;margin-left: 10%;margin-right: 10%;margin-top: 2%;margin-bottom: 5%;">
@@ -106,24 +103,44 @@
                     <div class="agile-field-txt">
                         <label>
                         Host:</label>
-                        <input type="text" name="name" placeholder=" " />
+                        <input type="text" name="name" placeholder=" " :style="{backgroundColor: textColor}" :readonly = "!isEditing" v-model="hostName"/>
                     </div>
                     <div class="agile-field-txt">
                         <label>
                         Name:</label>
-                        <input type="text" name="name" placeholder=" " />
+                        <input type="text" name="name" placeholder=" " :style="{backgroundColor: textColor}" :readonly = "!isEditing" v-model="meetingName"/>
                     </div>
                     <div class="agile-field-txt">
                         <label>
                         Time :</label>
                         <div class="mr_agilemain">
                         <div class="left-wthree">
-                            <input type="text" name="name" placeholder=" ">
+                            <select v-model="startTime" style="opacity: 1; background-color: #CCC;" disabled>
+                                <option value = "9">9:00</option>
+                                <option value ="10">10:00</option>
+                                <option value ="11">11:00</option>
+                                <option value ="12">12:00</option>
+                                <option value ="13">13:00</option>
+                                <option value ="14">14:00</option>
+                                <option value ="15">15:00</option>
+                                <option value ="16">16:00</option>
+                                <option value ="17">17:00</option>
+                            </select>
                             <label class="bot_w3">
                             Start Time</label>
                         </div>
                         <div class="left-wthree">
-                            <input type="text" name="name" placeholder=" ">
+                            <select v-model="endTime" style="opacity: 1; background-color: #CCC;" disabled>
+                                <option value ="10">10:00</option>
+                                <option value ="11">11:00</option>
+                                <option value ="12">12:00</option>
+                                <option value ="13">13:00</option>
+                                <option value ="14">14:00</option>
+                                <option value ="15">15:00</option>
+                                <option value ="16">16:00</option>
+                                <option value ="17">17:00</option>
+                                <option value ="18">18:00</option>
+                                </select>
                             <label class="bot_w3">
                             End Time</label>
                         </div>
@@ -132,19 +149,15 @@
                     <div class="agile-field-txt" v-if="isEditing">
                         <label>
                         Attendee:</label>
-                        <input type="text" name="name" placeholder=" "/>
+                        <input type="text" name="name" placeholder="Input the invitee email" v-model="inputInvitee" :readonly = "!isEditing" style="width:310px; height:50px;margin-left: 10px;" />
+                        <button style="float:right;width: 49px;height: 49px;margin-left: 2px;" class="form-button" @click="addNewPar();">+</button>
                     </div>
 
                     <div style="width: 100%;">
-                        <label>Total Participants: 6</label>
+                        <label>Total Participants: {{ participants.length }}</label>
                     </div>
                     <div style="width: 550px;height: 200px; overflow-x:hidden;">
-                        <p>Tommy_example1@gamil.com <button style="float:right;margin-top:1%;margin-right: 1%;width: 45px;height: 33px;line-height: 16px;" class="form-button">—</button></p>
-                        <p>John_example2@gamil.com <button style="float:right;margin-top:1%;margin-right: 1%;width: 45px;height: 33px;line-height: 16px;" class="form-button">—</button></p>
-                        <p>Kris_example4@gamil.com <button style="float:right;margin-top:1%;margin-right: 1%;width: 45px;height: 33px;line-height: 16px;" class="form-button">—</button></p>
-                        <p>Jess_example1@gamil.com <button style="float:right;margin-top:1%;margin-right: 1%;width: 45px;height: 33px;line-height: 16px;" class="form-button">—</button></p>
-                        <p>haha_example2@gamil.com <button style="float:right;margin-top:1%;margin-right: 1%;width: 45px;height: 33px;line-height: 16px;" class="form-button">—</button></p>
-                        <p>Kiki_example4@gamil.com <button style="float:right;margin-top:1%;margin-right: 1%;width: 45px;height: 33px;line-height: 16px;" class="form-button">—</button></p>
+                        <p v-for="(par, index) in participants">{{ par }}<button v-if="isEditing" style="float:right;margin-top:1%;margin-right: 1%;width: 45px;height: 33px;line-height: 16px;" class="form-button" @click="removePar(index)">—</button></p>
                     </div>
                     
                     
@@ -152,8 +165,8 @@
                         <button v-if="isHost && !isEditing" class="form-button" style="width: 140px; margin-right: 2%;" @click="popupMsg(true)">Cancel meeting</button>
                         <button v-if="isHost && !isEditing" class="form-button" style="width: 140px; margin-right: 2%;" @click="changeState(3)">Send Email</button>
                         <button v-if="isHost && !isEditing" class="form-button" style="width: 140px; margin-right: 2%;" @click="setEditMode(true)">Edit</button>
-                        <button v-if="isEditing" class="form-button" style="width: 140px; margin-right: 2%;" @click="setEditMode(false)">Save</button>
-                        <button v-if="isEditing" class="form-button" style="width: 140px; margin-right: 2%;" @click="setEditMode(false)">Back</button>
+                        <button v-if="isEditing" class="form-button" style="width: 140px; margin-right: 2%;" @click="onSaveBtnClick()">Save</button>
+                        <button v-if="isEditing" class="form-button" style="width: 140px; margin-right: 2%;" @click="onBackBtnClick()">Back</button>
                     </div>
                 </form>
             </div>
