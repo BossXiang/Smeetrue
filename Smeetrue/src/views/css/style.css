@@ -769,18 +769,19 @@ a:hover figcaption {
   }
 }
 
+
 #fullDiv {
   position: absolute;
   margin-top: 3%;
   margin-left: 10%;
   margin-bottom: 10%;
   margin-right: 10%;
-  padding: 3%;
+  padding: 2%;
   left: 23.5%;
   top: 0%;
   bottom: 0;
   right: 0;
-  height: 83%;
+  height: 88%;
   overflow: hidden;
   background-color: #53d8d8;
   border-radius: 10px;
