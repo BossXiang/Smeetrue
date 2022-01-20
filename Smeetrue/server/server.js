@@ -3,6 +3,7 @@ const express = require("express");
 const path = require("path");
 const bodyParser = require("body-parser");
 const cors = require("cors");
+const validator = require("validator");
 
 const app = express();
 const PORT = process.env.PORT || 8000;
@@ -54,7 +55,7 @@ app.get("/api/profiles/:email", (req, res) => {
       res.status(500).send(e);
     });
 });
-app.post("/api/profiles", (req, res) => {
+app.post("/api/createProfile", (req, res) => {
   const profile = new Profile(req.body);
   profile
     .save()
@@ -85,6 +86,7 @@ app.post("/api/updateProfile", (req, res) => {
 });
 
 const Meeting = require("./models/meeting");
+const { profile } = require("console");
 app.get("/api/meetings", (req, res) => {
   Meeting.find({})
     .then((meetings) => {
@@ -107,8 +109,9 @@ app.get("/api/meetings/:id", (req, res) => {
       res.status(500).send(e);
     });
 });
-app.post("/api/meetings", (req, res) => {
+app.post("/api/createMeeting", (req, res) => {
   const meeting = new Meeting(req.body);
+  console.log(req.body);
   meeting
     .save()
     .then(() => {
@@ -116,6 +119,69 @@ app.post("/api/meetings", (req, res) => {
     })
     .catch((err) => {
       res.status(400).send(err);
+    });
+});
+app.delete("/api/deleteMeeting", (req, res) => {});
+app.post("/api/updateMeeting", (req, res) => {});
+app.get("/api/meetings/:month/:day", (req, res) => {
+  Meeting.find({ month: req.params.month, day: req.params.day })
+    .then((meetings) => {
+      res.status(200).send(meetings);
+    })
+    .catch((e) => {
+      res.status(500).send();
+    });
+});
+
+const Room = require("./models/room");
+app.post("/api/roomInit", (req, res) => {
+  Room.deleteMany({})
+    .then((result) => {
+      console.log(result);
+    })
+    .catch((err) => {
+      console.log(err);
+    });
+  const room1 = new Room({
+    id: "0",
+    name: "RoomA",
+    location: "location",
+    description: "description area",
+  }).save();
+  const room2 = new Room({
+    id: "1",
+    name: "RoomB",
+    location: "location",
+    description: "description area",
+  }).save();
+  const room3 = new Room({
+    id: "2",
+    name: "RoomC",
+    location: "location",
+    description: "description area",
+  }).save();
+  const room4 = new Room({
+    id: "3",
+    name: "RoomD",
+    location: "location",
+    description: "description area",
+  }).save();
+  const room5 = new Room({
+    id: "4",
+    name: "RoomE",
+    location: "location",
+    description: "description area",
+  }).save();
+  console.log("rooms successfully initialized!");
+  res.status(201).send();
+});
+app.get("/api/rooms", (req, res) => {
+  Room.find({})
+    .then((rooms) => {
+      res.status(200).send(rooms);
+    })
+    .catch((e) => {
+      res.status(500).send();
     });
 });
 
@@ -141,6 +207,29 @@ app.post("/login", (req, res) => {
     });
     const payload = ticket.getPayload();
     const userid = payload["sub"];
+
+    Profile.findOne({ email: payload.email }).then((profile) => {
+      if (!profile) {
+        const newProfile = new Profile({
+          name: payload.name,
+          email: payload.email,
+          gender: "",
+          occupation: "",
+          personalInfo: "New comer!!",
+          meetingIDs: [],
+          hostMeetingIDs: [],
+        });
+        newProfile
+          .save()
+          .then(() => {
+            console.log("New profile created!");
+          })
+          .catch((err) => {
+            console.log(err);
+          });
+      }
+    });
+
     console.log(payload);
   }
   verify()

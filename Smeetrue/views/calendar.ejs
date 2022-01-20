@@ -97,25 +97,13 @@
                 </tr>
                 <tr v-for="(roomName, index) in roomNames">
                     <th style="font-size:15px"> {{roomName}} </th>
-                    <td v-for="avail in roomAvail[index]" :style="avail ? 'background-color: saddlebrown;' : ''">&nbsp;</td>
+                    <td v-for="avail in roomOccupied[index]" :style="avail ? 'background-color: saddlebrown;' : ''">&nbsp;</td>
                 </tr>
             </table>
-            <button class="calendar-button" @click="changeState(2)" style="height:36px; width: 120px; margin-left: 50%;">Book!</button>
+                <button class="calendar-button" @click="changeState(2)" style="height:36px; width: 120px; margin-left: 50%;">Book!</button>
+                <button class="calendar-button" @click="changeState(0)" style="height:36px; width: 120px; margin-left: 50%;">Back</button>
+            
         </div>
-
-        <!-- <div class="calendar-pop-up-screen" v-if="isShowDateInfo">
-            <i class="fas fa-angle-left prev" @click="showCalendar" style="cursor: pointer;"></i>
-            <h1 style="text-align: center;">12/27(Mon)</h1>
-            <ul>
-                <li style="text-align: center;">10:00~11:00 RoomA (Team1)</li>
-                <li style="text-align: center;">11:00~12:00 RoomA (Team2)</li>
-                <li style="text-align: center;">11:00~12:00 RoomB (Team3)</li>
-                <li style="text-align: center;">13:00~14:00 RoomC (Team1)</li>
-                <li style="text-align: center;">15:00~17:00 RoomB (Team1)</li>
-                <li style="text-align: center;">16:00~17:00 RoomA (Team2)</li>
-            </ul>
-            <button @click="changeState(2)">Back</button>
-        </div> -->
 
         <div class="container-fluid" id = "calendar-booking-page" v-if="isShowRoomView" style="margin-left: 10%;margin-right: 10%;margin-top: 2%;margin-bottom: 5%;">
             <div class="w3ls-contact">
@@ -125,43 +113,54 @@
                     <div class="agile-field-txt">
                         <label>
                         Host:</label>
-                        <input type="text" name="name" placeholder=" " />
+                        <input type="text" name="name" placeholder=" " v-model="hostName" />
                     </div>
                     <div class="agile-field-txt">
                         <label>
                         Name:</label>
-                        <input type="text" name="name" placeholder=" " />
+                        <input type="text" name="name" placeholder=" " v-model="meetingName" />
+                    </div>
+                    <div class="agile-field-txt">
+                        <label>
+                        Meeting room:</label>
+                        <select v-model="roomSelected">
+                            <option value ="0">RoomA</option>
+                            <option value ="1">RoomB</option>
+                            <option value ="2">RoomC</option>
+                            <option value ="3">RoomD</option>
+                            <option value ="4">RoomE</option>
+                        </select>
                     </div>
                     <div class="agile-field-txt">
                         <label>
                         Time :</label>
                         <div class="mr_agilemain">
                         <div class="left-wthree">
-                            <select>
-                                <option value ="9">9:00</option>
+                            <select v-model="startTime">
+                                <option value = "9">9:00</option>
                                 <option value ="10">10:00</option>
-                                <option value="11">11:00</option>
-                                <option value="12">12:00</option>
+                                <option value ="11">11:00</option>
+                                <option value ="12">12:00</option>
                                 <option value ="13">13:00</option>
                                 <option value ="14">14:00</option>
-                                <option value="15">15:00</option>
-                                <option value="16">16:00</option>
-                                <option value="17">17:00</option>
-                              </select>
+                                <option value ="15">15:00</option>
+                                <option value ="16">16:00</option>
+                                <option value ="17">17:00</option>
+                            </select>
                             <label class="bot_w3">
                             Start Time</label>
                         </div>
                         <div class="left-wthree">
-                            <select>
+                            <select v-model="endTime">
                                 <option value ="10">10:00</option>
-                                <option value="11">11:00</option>
-                                <option value="12">12:00</option>
+                                <option value ="11">11:00</option>
+                                <option value ="12">12:00</option>
                                 <option value ="13">13:00</option>
                                 <option value ="14">14:00</option>
-                                <option value="15">15:00</option>
-                                <option value="16">16:00</option>
-                                <option value="17">17:00</option>
-                                <option value="18">18:00</option>
+                                <option value ="15">15:00</option>
+                                <option value ="16">16:00</option>
+                                <option value ="17">17:00</option>
+                                <option value ="18">18:00</option>
                               </select>
                             <label class="bot_w3">
                             End Time</label>
@@ -187,7 +186,7 @@
                     
                     
                     <div style="text-align: right; width: 100%;margin-top: 50px;">
-                        <button class="calendar-button" style="line-height: 30px;" >Book</button>
+                        <button class="calendar-button" style="line-height: 30px;" @click="reserveMeeting()">Book</button>
                         <button class="calendar-button" style="margin-left: 12px;background-color:rgb(255, 62, 62); line-height: 30px;" @click="changeState(1)">Back</button>
                     </div>
                 </form>
