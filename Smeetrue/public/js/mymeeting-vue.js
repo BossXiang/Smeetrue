@@ -28,6 +28,8 @@ const app = Vue.createApp({
       currMonth: 0,
       dateSelected: 0,
       inputInvitee: "",
+      emailContent:
+        "[Template] It's very nice to have you here in the meeting. There are a few things you need to know before the meeting!! 1. Bring the laptop   2. Please dress up",
 
       hostMeetingIDs: [2, 3, 20],
       meetingIDs: [2, 6, 8, 29],
@@ -176,8 +178,30 @@ const app = Vue.createApp({
       this.loadMeetingInfo(index);
       this.changeState(2);
     },
+    refreshMeetingInfo() {
+      var comp = this;
+      var xhr = new XMLHttpRequest();
+      var url = "/api/meeting/" + this.listMeetingId;
+      xhr.open("GET", url, false);
+      xhr.onreadystatechange = function () {
+        if (this.readyState === XMLHttpRequest.DONE) {
+          if (this.status === 200) {
+            const result = JSON.parse(this.responseText)[0];
+            comp.isHost = result.hostEmail === comp.hostEmail;
+            comp.hostName = result.hostName;
+            comp.meetingName = result.name;
+            comp.startTime = result.startTime.toString();
+            comp.endTime = result.endTime.toString();
+            comp.participants = result.attendeeEmails;
+          } else {
+            console.log(this.status, this.statusText);
+          }
+        }
+      };
+      xhr.send();
+    },
     loadMeetingInfo(index) {
-      if (index) this.listMeetingId = this.listMeetingIds[index];
+      this.listMeetingId = this.listMeetingIds[index];
       var comp = this;
       var xhr = new XMLHttpRequest();
       var url = "/api/meeting/" + this.listMeetingId;
@@ -200,6 +224,14 @@ const app = Vue.createApp({
       xhr.send();
     },
     saveMeetingInfo() {
+      if (
+        this.meetingName === "" ||
+        this.hostName === "" ||
+        this.participants.length < 1
+      ) {
+        alert("Incomplete information!");
+        return;
+      }
       const xhr = new XMLHttpRequest();
       xhr.open("POST", "/api/updateMeeting");
       xhr.setRequestHeader("Content-Type", "application/json");
@@ -311,8 +343,54 @@ const app = Vue.createApp({
       this.setEditMode(false);
     },
     onBackBtnClick() {
-      this.loadMeetingInfo();
+      this.refreshMeetingInfo();
       this.setEditMode(false);
+    },
+    cancelMeeting() {
+      const xhr = new XMLHttpRequest();
+      xhr.open("DELETE", "/api/deleteMeeting/" + this.listMeetingId);
+      xhr.setRequestHeader("Content-Type", "application/json");
+      xhr.onreadystatechange = () => {
+        const DONE = 4;
+        const CREATED = 201;
+        if (xhr.readyState === DONE) {
+          if (xhr.status === CREATED || xhr.status === 200) {
+            console.log(xhr.response);
+            alert("Successfully canceled the meeting!");
+            window.location.href = "/mymeeting";
+          } else {
+            this.response = "Error: " + xhr.status;
+          }
+        }
+      };
+      xhr.send();
+      this.isShowPopUpMsg = false;
+    },
+    sendEmail() {
+      const xhr = new XMLHttpRequest();
+      xhr.open("POST", "/api/sendEmail");
+      xhr.setRequestHeader("Content-Type", "application/json");
+      xhr.onreadystatechange = () => {
+        const DONE = 4;
+        const CREATED = 201;
+        if (xhr.readyState === DONE) {
+          if (xhr.status === CREATED || xhr.status === 200) {
+            //this.response = xhr.response;
+            console.log(xhr.response);
+            alert("message successfully sent!");
+            window.location.href = "/mymeeting";
+          } else {
+            this.response = "Error: " + xhr.status;
+            window.location.href = "/mymeeting";
+          }
+        }
+      };
+      xhr.send(
+        JSON.stringify({
+          id: this.listMeetingId,
+          text: this.emailContent,
+        })
+      );
     },
   },
   mounted() {

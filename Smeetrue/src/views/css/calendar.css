@@ -29,10 +29,9 @@
   margin-right: 100px;
   margin-top: 30%;
   margin-left: 40%;
-  width:800px;
-  height:800px;
-  margin:0 auto;
-
+  width: 800px;
+  height: 800px;
+  margin: 0 auto;
 }
 
 table {
@@ -81,7 +80,6 @@ caption {
   touch-action: manipulation;
   vertical-align: middle;
   white-space: nowrap;
-  margin-left: 49%;
 }
 
 .calendar-button:focus:not(:focus-visible):not(.focus-visible) {

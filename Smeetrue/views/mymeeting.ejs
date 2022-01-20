@@ -24,7 +24,7 @@
             </button>
             <div class="tm-site-header">
                 <div class="mb-3 mx-auto tm-site-logo"><i class="fas fa-book-open fa-2x"></i></div>            
-                <h1 class="text-center" style="font-family:'Source Sans Pro', sans-serif">Smeetrue</h1>
+                <h1 class="text-center" style="font-family:'Source Sans Pro', sans-serif;margin-left: 80px;">Smeetrue</h1>
             </div>
             <nav class="tm-nav" id="tm-nav">            
                 <ul>
@@ -52,10 +52,15 @@
             <a href="/logout" id="sign-out-button">Sign out</a>
             <!-- <button onclick="signOut()" id="sign-out-button">Sign Out</button> -->
         </div>
+        <style>
+            [v-cloak] {
+                display: none;
+            }
+        </style>
     </header>
 
     <section id="mymeeting">
-        <div id='fullDiv' v-if = isShowCalendar>
+        <div id='fullDiv' v-if = isShowCalendar v-cloak style="height: 70%;margin-top: 6%;">
             <div style="width: 100%; text-align: center;" >
                 <div style="display: inline-block; width: 50px; height: 50px; border-radius: 7px; background-color: rgb(255, 13, 13)"></div>
                 <h1 style="display: inline-block;font-family:'Source Sans Pro', sans-serif;">Host</h1>
@@ -92,12 +97,12 @@
             </ul>
         </div>
         
-        <div id="meetingList" v-if = isShowMeetingList style="text-align: center; height: fit-content;">
+        <div id="meetingList" v-if = isShowMeetingList v-cloak style="text-align: center; height: fit-content;">
             <h1>{{ formattedDate }}</h1>
             <label v-for="(name, index) in listMeetings" class="meetingListItem" @click="onListMeetingClick(index)">{{ name }}</label>
         </div>
 
-        <div class="container-fluid" id = "calendar-booking-page" v-if = isShowMeetingInfo style="z-index:100;position: relative;margin-left: 10%;margin-right: 10%;margin-top: 2%;margin-bottom: 5%;">
+        <div class="container-fluid" id = "calendar-booking-page" v-cloak v-if = isShowMeetingInfo style="z-index:100;position: relative;margin-left: 10%;margin-right: 10%;margin-top: 2%;margin-bottom: 5%;">
             <div class="w3ls-contact">
                 <form action="" method="post" onsubmit="return false">
                     <div class="agile-field-txt">
@@ -157,7 +162,7 @@
                         <label>Total Participants: {{ participants.length }}</label>
                     </div>
                     <div style="width: 550px;height: 200px; overflow-x:hidden;">
-                        <p v-for="(par, index) in participants">{{ par }}<button v-if="isEditing" style="float:right;margin-top:1%;margin-right: 1%;width: 45px;height: 33px;line-height: 16px;" class="form-button" @click="removePar(index)">—</button></p>
+                        <p v-for="(par, index) in participants" style="color: white;">{{ par }}<button v-if="isEditing" style="float:right;margin-top:1%;margin-right: 1%;width: 45px;height: 33px;line-height: 16px;" class="form-button" @click="removePar(index)">—</button></p>
                     </div>
                     
                     
@@ -172,21 +177,20 @@
             </div>
         </div>
         
-        <div id="meetingList" v-if = isShowEmailBox style="text-align: center;">
+        <div id="meetingList" v-if = isShowEmailBox v-cloak style="text-align: center;margin-top: 3%;">
             <h1 style="font-family:'Source Sans Pro', sans-serif">Message</h1>
-            <input type="textarea" style="width: 90%; height: 80%;">
+            <textarea v-model="emailContent" style="width: 90%; height: 80%;"></textarea>
             <div style="text-align: right; width: 100%;">
-                <button class="form-button" style="width: 140px;height: 40px; margin-top:4%; margin-right: 2%;" @click="changeState(2)">Send</button>
+                <button class="form-button" style="width: 140px;height: 40px; margin-top:4%; margin-right: 2%;" @click="sendEmail()">Send</button>
                 <button class="form-button" style="width: 140px; height: 40px;margin-top: 4%; margin-right: 2%;" @click="changeState(2)">Cancel</button>
             </div>
         </div>
 
-        <div id="meetingList" v-if = isShowPopUpMsg style="text-align: center;z-index:150;position: relative;margin-top: -50%;">
-            <h1 style="font-family:'Source Sans Pro', sans-serif">Message</h1>
-            <input type="textarea" style="width: 90%; height: 80%;">
+        <div id="meetingList" v-if = isShowPopUpMsg v-cloak style="height:400px;width:35%;text-align: center;z-index:150;position: relative;margin-top: -40%;margin-left: 824px;background-color: rgb(253, 143, 0);">
+            <h1 style="font-family:'Source Sans Pro', sans-serif;font-size: 2.7em; ">Are you sure you want to cancel this meeting?</h1>
             <div style="text-align: right; width: 100%;">
-                <button class="form-button" style="width: 140px;height: 40px; margin-top:4%; margin-right: 2%;" @click = "popupMsg(false)">Yes</button>
-                <button class="form-button" style="width: 140px; height: 40px;margin-top: 4%; margin-right: 2%;" @click = "popupMsg(false)">No</button>
+                <button class="form-button" style="width: 140px;height: 60px; margin-top:26%; margin-right: 18%;" @click = "cancelMeeting()">Yes</button>
+                <button class="form-button" style="width: 140px; height: 60px;margin-top: 26%; margin-right: 21%;" @click = "popupMsg(false)">No</button>
             </div>
             
         </div>

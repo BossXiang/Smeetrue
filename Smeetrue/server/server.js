@@ -3,7 +3,12 @@ const express = require("express");
 const path = require("path");
 const bodyParser = require("body-parser");
 const cors = require("cors");
-const validator = require("validator");
+const {
+  sendWelcomeEmail,
+  sendInvitationEmail,
+  sendCancelEmail,
+  sendGenericEmail,
+} = require("./emails/account");
 
 const app = express();
 const PORT = process.env.PORT || 8000;
@@ -117,7 +122,7 @@ app.post("/api/updateMeeting", (req, res) => {
       hostName: req.body.hostName,
       startTime: req.body.startTime,
       endTime: req.body.endTime,
-      attendeeEmails: req.attendeeEmails,
+      attendeeEmails: req.body.attendeeEmails,
     }
   )
     .then((profile) => {
@@ -155,6 +160,15 @@ app.post("/api/createMeeting", (req, res) => {
       addMeeting(req.body.hostEmail, _id);
       for (var i in req.body.attendeeEmails) {
         addMeeting(req.body.attendeeEmails[i], _id);
+        sendInvitationEmail(
+          req.body.attendeeEmails[i],
+          req.body.hostName,
+          req.body.name,
+          req.body.month,
+          req.body.day,
+          req.body.startTime,
+          req.body.endTime
+        );
       }
       res.status(201).send(meeting);
     })
@@ -162,8 +176,49 @@ app.post("/api/createMeeting", (req, res) => {
       res.status(400).send(err);
     });
 });
-app.delete("/api/deleteMeeting", (req, res) => {});
-app.post("/api/updateMeeting", (req, res) => {});
+app.delete("/api/deleteMeeting/:id", (req, res) => {
+  Meeting.findOne({ _id: req.params.id })
+    .then((meeting) => {
+      const _emails = meeting.attendeeEmails;
+      for (var i in _emails) {
+        sendCancelEmail(
+          _emails[i],
+          meeting.hostName,
+          meeting.name,
+          meeting.month,
+          meeting.day,
+          meeting.startTime,
+          meeting.endTime
+        );
+      }
+    })
+    .catch((e) => {
+      console.log(e);
+    });
+  Meeting.deleteOne({ _id: req.params.id })
+    .then((meetings) => {
+      res.status(200).send(meetings);
+    })
+    .catch((e) => {
+      res.status(500).send();
+    });
+});
+
+app.post("/api/sendEmail", (req, res) => {
+  Meeting.findOne({ _id: req.body.id })
+    .then((meeting) => {
+      const _emails = meeting.attendeeEmails;
+      for (var i in _emails) {
+        sendGenericEmail(_emails[i], req.body.text);
+      }
+      res.status(200).send("Success");
+    })
+    .catch((e) => {
+      console.log(e);
+      res.status(500).send("Failed");
+    });
+});
+
 app.get("/api/meeting/:id", (req, res) => {
   Meeting.find({ _id: req.params.id })
     .then((meetings) => {
@@ -185,7 +240,10 @@ app.get("/api/meetings/:month/:day", (req, res) => {
 app.get("/api/getMeetings/:month/:email", (req, res) => {
   Meeting.find({
     month: req.params.month,
-    hostEmail: req.params.email,
+    $or: [
+      { hostEmail: req.params.email },
+      { attendeeEmails: req.params.email },
+    ],
   })
     .then((meetings) => {
       res.status(200).send(meetings);
@@ -198,7 +256,10 @@ app.get("/api/getMeetings/:month/:day/:email", (req, res) => {
   Meeting.find({
     month: req.params.month,
     day: req.params.day,
-    hostEmail: req.params.email,
+    $or: [
+      { hostEmail: req.params.email },
+      { attendeeEmails: req.params.email },
+    ],
   })
     .then((meetings) => {
       res.status(200).send(meetings);
@@ -256,6 +317,7 @@ app.post("/login", (req, res) => {
         newProfile
           .save()
           .then(() => {
+            sendWelcomeEmail(payload.email, payload.name);
             console.log("New profile created!");
           })
           .catch((err) => {

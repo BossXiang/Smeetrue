@@ -31,7 +31,7 @@ https://templatemo.com/tm-553-xtra-blog
             </button>
             <div class="tm-site-header">
                 <div class="mb-3 mx-auto tm-site-logo"><i class="fas fa-book-open fa-2x"></i></div>            
-                <h1 class="text-center" style="font-family:'Source Sans Pro', sans-serif">Smeetrue</h1>
+                <h1 class="text-center" style="font-family:'Source Sans Pro', sans-serif;margin-left: 80px;">Smeetrue</h1>
             </div>
             <nav class="tm-nav" id="tm-nav">            
                 <ul>
@@ -67,11 +67,16 @@ https://templatemo.com/tm-553-xtra-blog
                 }
             </script> -->
         </div>
+        <style>
+            [v-cloak] {
+                display: none;
+            }
+        </style>
     </header>
 
 
-    <div class="container-fluid" id = "myprofile-page" style="margin-left: 10%;margin-right: 10%;margin-top: 2%;margin-bottom: 5%;">
-        <div class="w3ls-contact">
+    <div class="container-fluid" id = "myprofile-page" v-cloak style="margin-left: 10%;margin-right: 10%;margin-top: 2%;margin-bottom: 5%;">
+        <div class="w3ls-contact" style="margin-top: -1.8%;">
             <!-- form starts here -->
             <form action="" method="post" onsubmit="return false">
             <img src= <%= user.picture %> style="width:110px; height:110px; border-radius:50%;margin-left:40%;margin-bottom:5%;margin-top:0%" alt="">
@@ -107,18 +112,6 @@ https://templatemo.com/tm-553-xtra-blog
                 <button style="margin-right: 3%;" class="form-button" v-if="isEditing===false" @click="setEditing(true)">Edit</button>
             </div>
 
-            <!-- <div class="w3ls-contact  w3l-sub">
-                <input type="submit" value="Save" style="font-size: 18px; width:80px; height: 40px; line-height: 30px; 
-                background-color: rgba(205, 241, 43, 0.952); border-radius: 5px;" />
-            </div>
-            <div class="w3ls-contact  w3l-sub">
-                <input type="submit" value="Cancel" style="font-size: 18px; width:80px; height: 40px; line-height: 30px; 
-                background-color: rgba(205, 241, 43, 0.952); border-radius: 5px;" />
-            </div>
-            <div class="w3ls-contact  w3l-sub">
-                <input type="submit" value="Edit" style="font-size: 18px; width:80px; height: 40px; line-height: 30px; 
-                background-color: rgb(205, 241, 43, 0.952); border-radius: 5px;" />
-            </div> -->
             </form>
         </div>
     </div>

@@ -38,9 +38,8 @@ const app = Vue.createApp({
       currMonth: 0,
       dateSelected: 0,
       invitees: [
-        "b10815001@gapps.ntust.edu.tw",
-        "b10815002@gapps.ntust.edu.tw",
-        "b10815003@gapps.ntust.edu.tw",
+        "b108150024@gapps.ntust.edu.tw",
+        "b108150066@gapps.ntust.edu.tw",
       ],
       inputInvitee: "",
       meetingName: "",
@@ -188,13 +187,14 @@ const app = Vue.createApp({
       st = parseInt(this.startTime);
       et = parseInt(this.endTime);
       if (st >= et) {
-        alert("Time error!");
+        alert("Invalid start time and end time!");
         return;
       }
       if (
         this.hostName === "" ||
         this.meetingName === "" ||
-        this.roomSelected === ""
+        this.roomSelected === "" ||
+        this.invitees.length < 1
       ) {
         alert("Incomplete info!");
         return;

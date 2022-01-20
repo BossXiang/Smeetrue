@@ -23,7 +23,7 @@
             </button>
             <div class="tm-site-header">
                 <div class="mb-3 mx-auto tm-site-logo"><i class="fas fa-book-open fa-2x"></i></div>            
-                <h1 class="text-center"style="font-family:'Source Sans Pro', sans-serif">Smeetrue</h1>
+                <h1 class="text-center"style="font-family:'Source Sans Pro', sans-serif;margin-left: 80px;">Smeetrue</h1>
             </div>
             <nav class="tm-nav" id="tm-nav">            
                 <ul>
@@ -52,11 +52,16 @@
             <a href="/logout" id="sign-out-button">Sign out</a>
             <!-- <button onclick="signOut()" id="sign-out-button">Sign Out</button> -->
         </div>
+        <style>
+            [v-cloak] {
+                display: none;
+            }
+        </style>
     </header>
 
 
     <div id="calendar" style="margin-right: 10%;margin-left: 10%;">
-        <div id='fullDiv' v-if="isShowCalendar">
+        <div id='fullDiv' v-if="isShowCalendar" v-cloak style="height: 62%;margin-top: 7%;">
             <div class="calendar-month">
                 <i class="fas fa-angle-left prev" @click="decMonth()"></i>
                 <div>
@@ -80,32 +85,33 @@
             </ul>
         </div>
 
-        <div class="calendar-time-table" v-if="isShowDateInfo" >
-            <label style="font-size: 30px;">{{ formattedDate }}</label>
-            <table>
+        <div class="calendar-time-table" v-if="isShowDateInfo" v-cloak>
+            <table style="height: 600px; width: 1300px; margin-left:-280px;margin-top: -120px;">
                 <tr>
-                    <td>&nbsp;</td>
-                    <td style="font-size:15px">&nbsp;&nbsp;9:00~</br>10:00 </td>
-                    <td style="font-size:15px">10:00~</br>11:00 </td>
-                    <td style="font-size:15px">11:00~</br>12:00 </td>
-                    <td style="font-size:15px">12:00~</br>13:00 </td>
-                    <td style="font-size:15px">13:00~</br>14:00 </td>
-                    <td style="font-size:15px">14:00~</br>15:00 </td>
-                    <td style="font-size:15px">15:00~</br>16:00 </td>
-                    <td style="font-size:15px">16:00~</br>17:00 </td>
-                    <td style="font-size:15px">17:00~</br>18:00 </td>
+                    <td style="font-size:28px;font-weight: 1000;">{{ formattedDate }}</td>
+                    <td style="font-size:25px">&nbsp;&nbsp;9:00~</br>10:00 </td>
+                    <td style="font-size:25px">10:00~</br>11:00 </td>
+                    <td style="font-size:25px">11:00~</br>12:00 </td>
+                    <td style="font-size:25px">12:00~</br>13:00 </td>
+                    <td style="font-size:25px">13:00~</br>14:00 </td>
+                    <td style="font-size:25px">14:00~</br>15:00 </td>
+                    <td style="font-size:25px">15:00~</br>16:00 </td>
+                    <td style="font-size:25px">16:00~</br>17:00 </td>
+                    <td style="font-size:25px">17:00~</br>18:00 </td>
                 </tr>
                 <tr v-for="(roomName, index) in roomNames">
-                    <th style="font-size:15px"> {{roomName}} </th>
+                    <th style="font-size:25px"> {{roomName}} </th>
                     <td v-for="avail in roomOccupied[index]" :style="avail ? 'background-color: saddlebrown;' : ''">&nbsp;</td>
                 </tr>
             </table>
-                <button class="calendar-button" @click="changeState(2)" style="height:36px; width: 120px; margin-left: 50%;">Book!</button>
-                <button class="calendar-button" @click="changeState(0)" style="height:36px; width: 120px; margin-left: 50%;">Back</button>
+            <div style="text-align: right; width: 100%;">
+                <button class="form-button" style="width: 140px;height: 60px; margin-top:3%; margin-right: 50px;background-color: rgb(167, 44, 13);color: white;font-size: 2rem;font-family:'Source Sans Pro', sans-serif" @click="changeState(0)">Back</button>
+                <button class="form-button" style="width: 140px; height: 60px;margin-top: 3%; margin-right: 520px;background-color: rgb(68, 216, 31);color: white;font-size: 2rem;font-family:'Source Sans Pro', sans-serif" @click="changeState(2)">Book</button>
+            </div>
             
         </div>
 
-        <div class="container-fluid" id = "calendar-booking-page" v-if="isShowRoomView" style="margin-left: 10%;margin-right: 10%;margin-top: 2%;margin-bottom: 5%;">
+        <div class="container-fluid" id = "calendar-booking-page" v-if="isShowRoomView" v-cloak style="margin-left: 10%;margin-right: 10%;margin-top: 2%;margin-bottom: 5%;">
             <div class="w3ls-contact">
                 <!-- form starts here -->
                
@@ -117,7 +123,7 @@
                     </div>
                     <div class="agile-field-txt">
                         <label>
-                        Name:</label>
+                        Meeting Name:</label>
                         <input type="text" name="name" placeholder=" " v-model="meetingName" />
                     </div>
                     <div class="agile-field-txt">
@@ -181,13 +187,13 @@
                     </div>
 
                     <div style="width: 550px;height: 200px; overflow-x:hidden;">
-                        <p v-for="(invitee, index) in invitees"> {{invitee}} <button style="float:right;margin-top:1%;margin-right: 1%;width: 38px;height: 33px;line-height: 0px;" class="form-button" @click="removeInvitee(index)">—</button></p>
+                        <p v-for="(invitee, index) in invitees" style="color: white;"> {{invitee}} <button style="float:right;margin-top:1%;margin-right: 1%;width: 38px;height: 33px;line-height: 0px;" class="form-button" @click="removeInvitee(index)">—</button></p>
                     </div>
                     
                     
                     <div style="text-align: right; width: 100%;margin-top: 50px;">
-                        <button class="calendar-button" style="line-height: 30px;" @click="reserveMeeting()">Book</button>
-                        <button class="calendar-button" style="margin-left: 12px;background-color:rgb(255, 62, 62); line-height: 30px;" @click="changeState(1)">Back</button>
+                        <button class="calendar-button" style="margin-left: 30px; background-color:rgb(255, 62, 62); line-height: 30px; width: 100px; font-size: 1.2rem;" @click="changeState(1)">Back</button>
+                        <button class="calendar-button" style="line-height: 30px;margin-left: 12px; width: 100px; font-size: 1.2rem;" @click="reserveMeeting()">Book</button>
                     </div>
                 </form>
             </div>
